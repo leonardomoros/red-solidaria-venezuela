@@ -1,10 +1,54 @@
 ---
 ---
 <section class="hero">
-  <div class="hero-eye">🇻🇪 Información centralizada — Sismo Venezuela 2026</div>
+  <div class="hero-eye" aria-hidden="true">🇻🇪 Información centralizada — Sismo Venezuela 2026</div>
   <h1>Busca. Reporta.<br><em>Ayuda.</em></h1>
   <p>Encuentra personas hospitalizadas, sube listas de centros de salud, localiza centros de acopio y dona sangre. Todo en un lugar.</p>
+
   <div class="functions">
+
+    <!-- Jornadas de sangre — carrusel vertical -->
+    <div class="fn-blood-card" role="region" aria-label="Jornadas de Donación de Sangre">
+      <div class="fn-blood-header">
+        <span class="fn-blood-pulse" aria-hidden="true"></span>
+        <span class="fn-blood-label">JORNADAS ACTIVAS</span>
+      </div>
+      <h2 class="fn-blood-title">Donar Sangre</h2>
+
+      <div class="fn-carousel-wrap">
+        <div class="fn-carousel-track" id="fn-track">
+
+          <div class="fn-slide" role="group" aria-label="Jornada 1 de 2">
+            <div class="fn-slide-org">Centro Médico de Caracas</div>
+            <div class="fn-slide-name">Jornada Solidaria<br>#SismoVenezuela</div>
+            <div class="fn-slide-row"><span aria-hidden="true">📅</span> Sáb 27 de junio</div>
+            <div class="fn-slide-row"><span aria-hidden="true">🕐</span> 8:00 AM – 2:00 PM</div>
+            <div class="fn-slide-row"><span aria-hidden="true">📍</span> Jardín Cincuentenario<br><span class="fn-slide-sub">Edf. Principal, Centro Médico</span></div>
+            <div class="fn-slide-badge">1 donante salva 3 vidas</div>
+          </div>
+
+          <div class="fn-slide" role="group" aria-label="Jornada 2 de 2">
+            <div class="fn-slide-org">IVSS · Ministerio de Trabajo</div>
+            <div class="fn-slide-name">Jornada Donantes<br>Voluntarios</div>
+            <div class="fn-slide-row"><span aria-hidden="true">📅</span> 26 al 28 de junio</div>
+            <div class="fn-slide-row"><span aria-hidden="true">🕐</span> Desde las 8:00 AM</div>
+            <div class="fn-slide-row"><span aria-hidden="true">📍</span> Hemocentro Chacao</div>
+            <div class="fn-slide-row"><span aria-hidden="true">📍</span> Hosp. Domingo Luciani</div>
+            <div class="fn-slide-row"><span aria-hidden="true">📍</span> Hospital Pérez Carreño</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="fn-dots" role="tablist" aria-label="Navegación del carrusel">
+        <button class="fn-dot fn-dot-on" onclick="fnGo(0)" aria-label="Jornada 1" role="tab" aria-selected="true"></button>
+        <button class="fn-dot" onclick="fnGo(1)" aria-label="Jornada 2" role="tab" aria-selected="false"></button>
+      </div>
+
+      <a href="#sangre" class="fn-blood-link">Ver todos los bancos de sangre →</a>
+    </div>
+
+    <!-- Cards 2×2 -->
     <a href="#hospitales" class="fn-card fn-1">
       <span class="fn-icon" aria-hidden="true">🏥</span>
       <h2>Buscar en hospitales</h2>
@@ -15,31 +59,42 @@
       <h2>Subir lista de pacientes</h2>
       <p>Sube una foto o Excel de tu centro de salud</p>
     </a>
-    <a href="#que-donar" class="fn-card fn-3">
-      <span class="fn-icon" aria-hidden="true">📦</span>
-      <h2>Qué donar</h2>
-      <p>Artículos más necesarios y centros de acopio</p>
-    </a>
     <a href="#sangre" class="fn-card fn-4">
       <span class="fn-icon" aria-hidden="true">🩸</span>
       <h2>Donar sangre</h2>
-      <p>Bancos de sangre activos en Táchira</p>
+      <p>Bancos de sangre activos en Venezuela</p>
     </a>
-    <a href="#psicologia" class="fn-card" style="background:#7B3F9E;color:#fff">
+    <a href="#psicologia" class="fn-card fn-5">
       <span class="fn-icon" aria-hidden="true">🧠</span>
       <h2>Apoyo psicológico</h2>
       <p>Recursos gratuitos para sobrevivientes y familias</p>
     </a>
+
   </div>
 </section>
 
-<div class="qphones">
-  <div class="qphones-inner">
-    <span class="qp-label">📞 Emergencias</span>
-    <a href="tel:171" class="qp-chip">171 <small>CANTV</small></a>
-    <a href="tel:*1" class="qp-chip">*1 <small>Movilnet</small></a>
-    <a href="tel:112" class="qp-chip">112 <small>Digitel</small></a>
-    <a href="tel:911" class="qp-chip">911 <small>Movistar</small></a>
-    <a href="tel:171" class="qp-chip">171 <small>Prot. Civil</small></a>
-  </div>
-</div>
+<script is:inline>
+(function () {
+  var cur = 0, tot = 2, timer;
+
+  function fnGo(n) {
+    cur = n;
+    var t = document.getElementById('fn-track');
+    if (t) t.style.transform = 'translateX(-' + n * 100 + '%)';
+    document.querySelectorAll('.fn-dot').forEach(function (d, i) {
+      d.classList.toggle('fn-dot-on', i === n);
+      d.setAttribute('aria-selected', i === n ? 'true' : 'false');
+    });
+  }
+  function fnNext() { fnGo((cur + 1) % tot); }
+
+  window.fnGo = fnGo;
+  timer = setInterval(fnNext, 5000);
+
+  var wrap = document.querySelector('.fn-carousel-wrap');
+  if (wrap) {
+    wrap.addEventListener('mouseenter', function () { clearInterval(timer); });
+    wrap.addEventListener('mouseleave', function () { timer = setInterval(fnNext, 5000); });
+  }
+})();
+</script>
