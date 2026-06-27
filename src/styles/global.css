@@ -111,10 +111,10 @@ nav a:hover,nav a.active{background:var(--text);color:#fff;border-color:var(--te
 .fn-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.18)}
 .fn-card .fn-num{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff}
 .fn-card .fn-icon{font-size:40px;margin-bottom:6px}
-.fn-card h3{font-size:15px;font-weight:700;line-height:1.2}
+.fn-card h2{font-size:15px;font-weight:700;line-height:1.2}
 .fn-card p{font-size:12px;color:#fff;line-height:1.4}
 .fn-1{background:#C0392B;color:#fff}.fn-2{background:#1A4F91;color:#fff}
-.fn-3{background:#C8820A;color:#fff}.fn-4{background:#1B6B3A;color:#fff}
+.fn-3{background:#7C5105;color:#fff}.fn-4{background:#1B6B3A;color:#fff}
 
 /* QUICK PHONES */
 .qphones{background:var(--red-bg);border-bottom:1px solid #F5C6C2;padding:14px 24px}
@@ -137,12 +137,12 @@ section+section{border-top:1px solid var(--border)}
 .search-notice{background:var(--blue-bg);border:1px solid #C5D9F0;border-radius:var(--r);padding:13px 18px;font-size:13px;color:var(--blue);margin-bottom:18px;display:flex;gap:10px;align-items:flex-start}
 .search-notice a{font-weight:700;color:var(--red)}
 .cruce-box{background:var(--surface);border:2px solid var(--amber);border-radius:var(--r);padding:22px 24px;margin-bottom:24px}
-.cruce-box h4{font-size:14px;font-weight:700;color:var(--amber);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.cruce-box h3{font-size:14px;font-weight:700;color:#7C5105;margin-bottom:10px}
 .cruce-form{display:flex;gap:10px;flex-wrap:wrap}
 .cruce-input{flex:1;min-width:160px;padding:10px 14px;border-radius:8px;border:2px solid var(--border);font-family:inherit;font-size:14px;background:var(--bg);color:var(--text);transition:border .15s}
 .cruce-input:focus{outline:none;border-color:var(--amber)}
-.btn-amber{background:var(--amber);color:#fff;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;border:none;cursor:pointer;white-space:nowrap}
-.btn-amber:hover{background:#a86b08}
+.btn-amber{background:#92600A;color:#fff;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;border:none;cursor:pointer;white-space:nowrap}
+.btn-amber:hover{background:#7C5105}
 .cruce-results{margin-top:14px;display:none}
 .cruce-alert{background:#FEF3CD;border:2px solid #F59E0B;border-radius:8px;padding:16px 18px}
 .cruce-alert h5{font-weight:700;color:#92400E;margin-bottom:6px;font-size:14px}
@@ -198,7 +198,7 @@ section+section{border-top:1px solid var(--border)}
 .patient-detail{font-size:11px;color:var(--muted);margin-top:2px}
 .patient-tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
 .ptag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap}
-.ptag-age{background:var(--amber-bg);color:var(--amber)}
+.ptag-age{background:var(--amber-bg);color:#7C5105}
 .ptag-ced{background:var(--blue-bg);color:var(--blue)}
 .hosp-show-more{text-align:center;padding:10px;border-top:1px solid var(--border);background:var(--bg)}
 .hosp-show-more button{font-size:12px;font-weight:700;color:var(--blue);background:none;border:none;cursor:pointer;padding:4px 12px}
@@ -245,7 +245,7 @@ section+section{border-top:1px solid var(--border)}
 .c-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border-radius:4px;padding:3px 8px;margin-bottom:10px}
 .tag-red{background:var(--red-bg);color:var(--red)}
 .tag-green{background:var(--green-bg);color:var(--green)}
-.tag-amber{background:var(--amber-bg);color:var(--amber)}
+.tag-amber{background:var(--amber-bg);color:#7C5105}
 .tag-blue{background:var(--blue-bg);color:var(--blue)}
 .card h3{font-size:15px;font-weight:700;margin-bottom:3px}
 .card-meta{font-size:12px;color:var(--muted);margin-bottom:10px}
@@ -260,7 +260,7 @@ section+section{border-top:1px solid var(--border)}
 .estado-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--border)}
 .estado-pill.soon .dot{background:#FCD34D}
 .estado-pill.active-state .dot{background:var(--green)}
-.coming-soon{background:var(--amber-bg);border:1px solid #F5D08A;border-radius:var(--r);padding:16px 20px;margin-top:18px;font-size:13px;color:var(--amber)}
+.coming-soon{background:var(--amber-bg);border:1px solid #F5D08A;border-radius:var(--r);padding:16px 20px;margin-top:18px;font-size:13px;color:#7C5105}
 .coming-soon strong{display:block;font-weight:700;margin-bottom:4px}
 
 /* SANGRE */
@@ -289,13 +289,13 @@ section+section{border-top:1px solid var(--border)}
 .donar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:13px}
 .donar-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px}
 .donar-icon{font-size:28px;margin-bottom:9px}
-.donar-item h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.donar-item h3{font-size:14px;font-weight:700;margin-bottom:10px}
+.no-donar h3{font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px}
 .donar-item ul{list-style:none}
 .donar-item ul li{font-size:13px;color:var(--muted);padding:3px 0;border-bottom:1px dashed var(--border)}
 .donar-item ul li:last-child{border:none}
 .donar-item ul li::before{content:"✓ ";color:var(--green);font-weight:700}
 .no-donar{background:var(--red-bg);border:1px solid #F5C6C2;border-radius:var(--r);padding:18px 22px;margin-top:18px}
-.no-donar h4{font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px}
 .no-donar ul{list-style:none;display:flex;gap:8px;flex-wrap:wrap}
 .no-donar ul li{font-size:12px;color:var(--red);background:#fff;border:1px solid #F5C6C2;padding:3px 9px;border-radius:4px}
 .no-donar ul li::before{content:"✗ ";font-weight:700}
