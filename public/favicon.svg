@@ -4,12 +4,12 @@
       <circle cx="50" cy="50" r="48"/>
     </clipPath>
   </defs>
-  <!-- Flag stripes clipped to circle -->
-  <rect x="2" y="2"  width="96" height="32" fill="#CF142B" clip-path="url(#circle)"/>
-  <rect x="2" y="34" width="96" height="32" fill="#F4C300" clip-path="url(#circle)"/>
-  <rect x="2" y="66" width="96" height="32" fill="#003082" clip-path="url(#circle)"/>
-  <!-- 8 stars arc in the yellow band -->
-  <g fill="#003082">
+  <!-- Flag stripes: Amarillo, Azul, Rojo (top to bottom) -->
+  <rect x="2" y="2"  width="96" height="32" fill="#F4C300" clip-path="url(#circle)"/>
+  <rect x="2" y="34" width="96" height="32" fill="#003082" clip-path="url(#circle)"/>
+  <rect x="2" y="66" width="96" height="32" fill="#CF142B" clip-path="url(#circle)"/>
+  <!-- 8 white stars arc in the blue stripe -->
+  <g fill="#FFFFFF">
     <circle cx="50" cy="50" r="2.6" transform="rotate(-90 50 50) translate(0 -16)"/>
     <circle cx="50" cy="50" r="2.6" transform="rotate(-64 50 50) translate(0 -16)"/>
     <circle cx="50" cy="50" r="2.6" transform="rotate(-38 50 50) translate(0 -16)"/>
