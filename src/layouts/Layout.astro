@@ -13,6 +13,23 @@ const {
 
 const canonical = 'https://www.redsolidariavenezuela.com';
 const ogImage = `${canonical}/og-image.png`;
+
+const structuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Red Solidaria Venezuela",
+  "url": canonical,
+  "description": description,
+  "inLanguage": "es",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${canonical}/#hospitales?q={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
+});
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -72,19 +89,7 @@ const ogImage = `${canonical}/og-image.png`;
   <link rel="sitemap" href="/sitemap.xml"/>
 
   <!-- Structured Data -->
-  <script type="application/ld+json" is:inline>{JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Red Solidaria Venezuela",
-    "url": canonical,
-    "description": description,
-    "inLanguage": "es",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${canonical}/#hospitales`,
-      "query-input": "required name=search_term_string"
-    }
-  })}</script>
+  <script type="application/ld+json" set:html={structuredData}></script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
