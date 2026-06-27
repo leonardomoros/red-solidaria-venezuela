@@ -3,9 +3,9 @@ import type { APIRoute } from 'astro';
 export const prerender = false;
 
 export const GET: APIRoute = async () => {
-  const sheetId = import.meta.env.GOOGLE_SHEETS_ID;
-  const apiKey = import.meta.env.GOOGLE_SHEETS_API_KEY;
-  const range = import.meta.env.GOOGLE_SHEETS_RANGE || 'Pacientes!A:H';
+  const sheetId = process.env.GOOGLE_SHEETS_ID ?? import.meta.env.GOOGLE_SHEETS_ID;
+  const apiKey = process.env.GOOGLE_SHEETS_API_KEY ?? import.meta.env.GOOGLE_SHEETS_API_KEY;
+  const range = process.env.GOOGLE_SHEETS_RANGE ?? import.meta.env.GOOGLE_SHEETS_RANGE ?? 'Pacientes!A:H';
 
   if (!sheetId || !apiKey) {
     return new Response(JSON.stringify([]), {
@@ -19,13 +19,17 @@ export const GET: APIRoute = async () => {
     const res = await fetch(url);
 
     if (!res.ok) {
-      throw new Error(`Sheets API ${res.status}`);
+      const text = await res.text();
+      console.error('[/api/pacientes] Sheets error:', res.status, text);
+      return new Response(JSON.stringify([]), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     const data = await res.json();
-    const rows: string[][] = data.values || [];
+    const rows = (data.values || []) as string[][];
 
-    // Skip header row (row 1), require a name in col C
     const patients = rows
       .slice(1)
       .filter(row => row[2]?.trim())
