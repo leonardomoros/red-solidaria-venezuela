@@ -1,0 +1,164 @@
+---
+---
+<div id="donaciones"></div>
+<section id="acopio">
+  <div class="container">
+    <div class="s-eye">📦 Función 03</div>
+    <h2 class="s-title">Centros de acopio</h2>
+    <p class="s-sub">Puntos verificados donde puedes llevar donaciones. Filtra por estado.</p>
+
+    <div class="tabs" id="acopio-tabs">
+      <button class="tab-btn active" onclick="filterAcopio('todos',this)">Todos</button>
+      <button class="tab-btn" onclick="filterAcopio('caracas',this)">Caracas</button>
+      <button class="tab-btn" onclick="filterAcopio('vargas',this)">La Guaira</button>
+      <button class="tab-btn" onclick="filterAcopio('miranda',this)">Miranda</button>
+      <button class="tab-btn" onclick="filterAcopio('aragua',this)">Aragua</button>
+      <button class="tab-btn" onclick="filterAcopio('carabobo',this)">Carabobo</button>
+    </div>
+
+    <div class="grid-2" id="acopio-grid">
+      <div class="card" data-state="caracas">
+        <span class="c-tag tag-green">✅ Activo · Caracas</span>
+        <h3>Cruz Roja — Sede Principal</h3>
+        <div class="card-meta">Alimentos, medicamentos, ropa, agua</div>
+        <div class="card-addr"><strong>Av. Andrés Bello, La Candelaria</strong><span>Caracas</span></div>
+        <div class="card-addr mt-3">🕐 Lun–Dom · 8:00 AM – 6:00 PM</div>
+        <a href="https://maps.google.com/?q=Cruz+Roja+Venezolana+Caracas" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="caracas">
+        <span class="c-tag tag-green">✅ Activo · Caracas</span>
+        <h3>Protección Civil — Plaza Venezuela</h3>
+        <div class="card-meta">Suministros médicos, alimentos no perecederos</div>
+        <div class="card-addr"><strong>Torre Ministerios, piso 1</strong><span>Plaza Venezuela</span></div>
+        <div class="card-addr mt-3">🕐 24 horas</div>
+        <a href="https://maps.google.com/?q=Proteccion+Civil+Caracas" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="caracas">
+        <span class="c-tag tag-green">✅ Activo · Caracas</span>
+        <h3>Universidad Metropolitana</h3>
+        <div class="card-meta">Agua, alimentos no perecederos, ropa y abrigos</div>
+        <div class="card-addr"><strong>Universidad Metropolitana</strong><span>Caracas</span></div>
+        <div class="card-addr mt-3">🕐 Vie 26, Sáb 27, Dom 28 · 8:00 AM – 6:00 PM</div>
+        <a href="https://maps.app.goo.gl/mLqCHgaBQMV56YsM7" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="caracas">
+        <span class="c-tag tag-green">✅ Activo · Caracas</span>
+        <h3>Colegio Cristo Rey de Altamira</h3>
+        <div class="card-meta">Donaciones generales</div>
+        <div class="card-addr"><strong>Colegio Cristo Rey</strong><span>Altamira, Caracas</span></div>
+        <div class="card-addr mt-3">🕐 Consultar horario</div>
+        <a href="https://maps.app.goo.gl/L5ALK2gTjhM3aeSx6" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="caracas">
+        <span class="c-tag tag-green">✅ Activo · Caracas</span>
+        <h3>Colegio Santiago de León</h3>
+        <div class="card-meta">Linternas con pilas, ropa, primeros auxilios, alimentos, pañales, fórmula infantil</div>
+        <div class="card-addr"><strong>Colegio Santiago de León</strong><span>Altamira, Caracas</span></div>
+        <div class="card-addr mt-3">🕐 10:00 AM – 1:00 PM</div>
+        <a href="https://maps.app.goo.gl/vGy5Xu7sTAjgyQiw8" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="caracas">
+        <span class="c-tag tag-green">✅ Activo · Caracas</span>
+        <h3>Colegio Champagnat</h3>
+        <div class="card-meta">Cajas, linternas, herramientas, agua, alimentos, kits primeros auxilios, ropa</div>
+        <div class="card-addr"><strong>Patio Libertador — Colegio Champagnat</strong><span>Caracas</span></div>
+        <div class="card-addr mt-3">🕐 Viernes · 9:00 AM – 4:00 PM</div>
+        <a href="https://maps.google.com/?q=Colegio+Champagnat+Caracas" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="vargas">
+        <span class="c-tag tag-red">🔴 Alta demanda · La Guaira</span>
+        <h3>Estadio Olímpico de La Guaira</h3>
+        <div class="card-meta">Todo tipo de donaciones · Zona más afectada</div>
+        <div class="card-addr"><strong>Av. Principal, La Guaira</strong><span>Estado La Guaira</span></div>
+        <div class="card-addr mt-3">🕐 24 horas · Prioridad máxima</div>
+        <a href="https://maps.google.com/?q=Estadio+La+Guaira+Venezuela" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="miranda">
+        <span class="c-tag tag-green">✅ Activo · Guatire, Miranda</span>
+        <h3>Sede de Bomberos de Zamora</h3>
+        <div class="card-meta">Agua, alimentos, artículos de higiene personal</div>
+        <div class="card-addr"><strong>Al lado del CC Guatire Plaza</strong><span>Guatire, Miranda</span></div>
+        <div class="card-addr mt-3">🕐 Lun–Dom · 8:00 AM – 6:00 PM</div>
+        <a href="https://maps.app.goo.gl/43v8niDdFZcRBFNt6" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="miranda">
+        <span class="c-tag tag-green">✅ Activo · Miranda</span>
+        <h3>Alcaldía de Chacao</h3>
+        <div class="card-meta">Alimentos, ropa en buen estado, medicamentos</div>
+        <div class="card-addr"><strong>Av. Francisco de Miranda, Chacao</strong><span>Miranda</span></div>
+        <div class="card-addr mt-3">🕐 7:00 AM – 8:00 PM</div>
+        <a href="https://maps.google.com/?q=Alcaldia+Chacao+Miranda" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="aragua">
+        <span class="c-tag tag-green">✅ Activo · Aragua</span>
+        <h3>Cruz Roja — Maracay</h3>
+        <div class="card-meta">Alimentos, medicamentos, agua potable</div>
+        <div class="card-addr"><strong>Av. Bolívar, Maracay</strong><span>Aragua</span></div>
+        <div class="card-addr mt-3">🕐 8:00 AM – 5:00 PM</div>
+        <a href="https://maps.google.com/?q=Cruz+Roja+Maracay+Aragua" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="carabobo">
+        <span class="c-tag tag-amber">🟡 Verificando · Carabobo</span>
+        <h3>Polideportivo Misael Delgado</h3>
+        <div class="card-meta">Alimentos no perecederos, agua</div>
+        <div class="card-addr"><strong>Av. Boyacá, Valencia</strong><span>Carabobo</span></div>
+        <div class="card-addr mt-3">🕐 9:00 AM – 6:00 PM</div>
+        <a href="https://maps.google.com/?q=Polideportivo+Misael+Delgado+Valencia" target="_blank" class="card-link">📍 Ver en mapa →</a>
+      </div>
+
+      <div class="card" data-state="todos" style="border:2px dashed var(--border);background:transparent;box-shadow:none;display:flex;align-items:center;justify-content:center;text-align:center;min-height:160px">
+        <div>
+          <div style="font-size:26px;margin-bottom:8px">📬</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:4px">¿Conoces un punto de acopio?</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Escríbenos y lo publicamos.</div>
+          <a href="mailto:hola@gixlabs.com?subject=Punto%20de%20acopio" class="btn-blue" style="font-size:13px;padding:8px 16px">Reportar punto →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="coming-soon">
+      <strong>📍 Estamos recibiendo información de más estados</strong>
+      Pulsa un estado para enviarnos información de centros de acopio en tu zona:
+    </div>
+    <div class="acopio-estados">
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Zulia" class="estado-pill soon">🔵 Zulia</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Lara" class="estado-pill soon">🔵 Lara</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Merida" class="estado-pill soon">🔵 Mérida</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Tachira" class="estado-pill soon">🔵 Táchira</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Bolivar" class="estado-pill soon">🔵 Bolívar</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Anzoategui" class="estado-pill soon">🔵 Anzoátegui</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Sucre" class="estado-pill soon">🔵 Sucre</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Monagas" class="estado-pill soon">🔵 Monagas</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Falcon" class="estado-pill soon">🔵 Falcón</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Portuguesa" class="estado-pill soon">🔵 Portuguesa</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Barinas" class="estado-pill soon">🔵 Barinas</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Guarico" class="estado-pill soon">🔵 Guárico</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Yaracuy" class="estado-pill soon">🔵 Yaracuy</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Trujillo" class="estado-pill soon">🔵 Trujillo</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Apure" class="estado-pill soon">🔵 Apure</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20Delta" class="estado-pill soon">🔵 Delta Amacuro</a>
+      <a href="mailto:hola@gixlabs.com?subject=Acopio%20NuevaEsparta" class="estado-pill soon">🔵 Nueva Esparta</a>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+function filterAcopio(state, btn) {
+  document.querySelectorAll('#acopio-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#acopio-grid .card').forEach(c => {
+    const ds = c.dataset.state;
+    c.classList.toggle('hidden', state !== 'todos' && ds !== state && ds !== 'todos');
+  });
+}
+</script>

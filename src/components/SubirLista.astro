@@ -1,0 +1,133 @@
+---
+---
+<section id="subir-lista">
+  <div class="container">
+    <div class="s-eye">📤 Función 02</div>
+    <h2 class="s-title">Sube una lista de tu centro de salud</h2>
+    <p class="s-sub">¿Trabajas en un hospital o eres voluntario? Envíanos la lista de pacientes. La publicamos en menos de una hora.</p>
+
+    <div class="upload-hero">
+      <div class="upload-hero-icon">📋</div>
+      <div>
+        <h3>Una foto es suficiente.</h3>
+        <p>No necesitas formato especial. Una foto del tablón del hospital, una lista en papel, un Excel o un mensaje de texto. Lo que tengas sirve. Solo dinos el centro de salud.</p>
+      </div>
+    </div>
+
+    <div class="upload-card">
+      <form id="lista-form" onsubmit="submitLista(event)">
+        <div class="form-row">
+          <div class="form-group full">
+            <label class="f-label" for="f-hospital">Centro de salud <span class="req">*</span></label>
+            <input type="text" id="f-hospital" class="f-input"
+              placeholder="Ej: Hospital Vargas, Clínica El Ávila, Cruz Roja Táchira..." required/>
+          </div>
+          <div class="form-group">
+            <label class="f-label" for="f-reporte">Tipo de reporte</label>
+            <select id="f-reporte" class="f-select">
+              <option value="">Selecciona...</option>
+              <option value="pacientes-hospitalizados">Pacientes hospitalizados</option>
+              <option value="pacientes-fallecidos">Pacientes fallecidos</option>
+              <option value="dados-de-alta">Dados de alta</option>
+              <option value="heridos-leves">Heridos leves atendidos</option>
+              <option value="lista-parcial">Lista parcial / incompleta</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="f-label" for="f-contacto">Tu contacto (para confirmar)</label>
+            <input type="text" id="f-contacto" class="f-input" placeholder="Email o teléfono"/>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:18px">
+          <label class="f-label">Adjunta tu lista <span class="req">*</span></label>
+          <div class="dropzone" id="dropzone">
+            <input type="file" id="f-archivo"
+              accept=".xlsx,.xls,.csv,.pdf,.docx,.jpg,.jpeg,.png,.txt,.ods,.heic,.webp"
+              required onchange="onFile(this)"/>
+            <div class="dz-icon">📎</div>
+            <div class="dz-main">Arrastra aquí o toca para seleccionar</div>
+            <div class="dz-sub">Una foto del tablón, un Excel, un PDF, lo que tengas</div>
+            <div class="dz-fmts">
+              <span class="fmt">📸 Foto</span>
+              <span class="fmt">📊 Excel</span>
+              <span class="fmt">📄 PDF</span>
+              <span class="fmt">📝 Word</span>
+              <span class="fmt">📋 CSV</span>
+              <span class="fmt">📃 Texto</span>
+            </div>
+            <div class="dz-file" id="dz-fname"></div>
+          </div>
+        </div>
+
+        <div class="upload-footer">
+          <button type="submit" class="btn-blue" id="submit-btn"
+            style="font-size:16px;padding:14px 28px">
+            📤 Enviar lista al equipo →
+          </button>
+        </div>
+      </form>
+
+      <div style="background:#EEF3FB;border:2px solid #1A4F91;border-radius:10px;padding:22px 26px;margin-top:20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <div style="font-size:40px;flex-shrink:0">📧</div>
+        <div style="flex:1;min-width:200px">
+          <div style="font-size:12px;font-weight:700;color:#1A4F91;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">¿Prefieres enviar por correo?</div>
+          <div style="font-size:20px;font-weight:800;color:#1A1918;margin-bottom:3px">hola@gixlabs.com</div>
+          <div style="font-size:13px;color:#6B6760">Adjunta tu lista con el nombre del hospital o refugio. Te respondemos en menos de una hora.</div>
+        </div>
+        <a href="mailto:hola@gixlabs.com?subject=Lista%20pacientes%20terremoto%202026"
+          style="background:#1A4F91;color:#fff;padding:13px 22px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap;display:inline-block">
+          Abrir correo →
+        </a>
+      </div>
+
+      <div style="font-size:12px;color:#6B6760;margin-top:10px;text-align:center">
+        Solo es obligatorio el centro de salud y el archivo · Te confirmamos cuando lo publiquemos
+      </div>
+
+      <div class="upload-ok" id="upload-ok">
+        <div class="ok-icon">✅</div>
+        <h4>¡Lista recibida!</h4>
+        <p>Revisamos y publicamos en menos de una hora. Gracias por ayudar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+function onFile(input) {
+  const name = input.files[0]?.name || '';
+  document.getElementById('dz-fname').textContent = name ? '✓ ' + name : '';
+}
+const dz = document.getElementById('dropzone');
+if (dz) {
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      document.getElementById('f-archivo').files = e.dataTransfer.files;
+      document.getElementById('dz-fname').textContent = '✓ ' + file.name;
+    }
+  });
+}
+function submitLista(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+  const hospital = document.getElementById('f-hospital').value;
+  const reporte  = document.getElementById('f-reporte').value;
+  const contacto = document.getElementById('f-contacto').value;
+  const subject  = encodeURIComponent('Lista pacientes — ' + hospital);
+  const body     = encodeURIComponent('Hospital/Centro: ' + hospital + '\nReporte: ' + reporte + '\nContacto: ' + contacto + '\n\n(Adjuntar archivo)');
+  setTimeout(() => {
+    window.location.href = 'mailto:hola@gixlabs.com?subject=' + subject + '&body=' + body;
+    document.getElementById('lista-form').style.display = 'none';
+    document.getElementById('upload-ok').style.display = 'block';
+    btn.disabled = false;
+  }, 600);
+}
+</script>

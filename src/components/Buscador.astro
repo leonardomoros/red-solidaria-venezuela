@@ -1,0 +1,300 @@
+---
+---
+<section id="hospitales">
+  <div class="container">
+    <div class="s-eye">🏥 Función 01 · La más importante</div>
+    <div class="flex-between">
+      <div>
+        <h2 class="s-title">Personas en centros de salud</h2>
+        <p class="s-sub" id="pacientes-stats">Cargando datos actualizados...</p>
+      </div>
+      <a href="#subir-lista" class="btn-blue" style="flex-shrink:0">📤 Subir nueva lista →</a>
+    </div>
+
+    <div class="cruce-box">
+      <h4>🔍 ¿Buscas a un familiar? Ingresa su nombre o cédula</h4>
+      <div class="cruce-form">
+        <input type="text" class="cruce-input" id="cruce-nombre"
+          placeholder="Nombre y apellido..."
+          autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <input type="text" class="cruce-input" id="cruce-cedula"
+          placeholder="Número de cédula..."
+          autocomplete="off"/>
+        <button class="btn-amber" onclick="buscarFamiliar()">🔍 Buscar familiar</button>
+      </div>
+      <div class="cruce-results" id="cruce-results" style="display:none"></div>
+    </div>
+
+    <div class="search-notice">
+      <span>ℹ️</span>
+      <span>Lista ciudadana en construcción. Si no encuentras a alguien, revisa
+        <a href="https://desaparecidosterremotovenezuela.com/" target="_blank" rel="noopener">desaparecidosterremotovenezuela.com</a>
+        o llama directamente al hospital.
+      </span>
+    </div>
+
+    <div class="search-bar">
+      <input type="search" class="s-input" id="global-search"
+        placeholder="Buscar nombre o cédula en todos los hospitales..."
+        autocomplete="off" autocorrect="off" spellcheck="false"
+        oninput="globalSearch(this.value)"/>
+    </div>
+    <div class="s-stats" id="global-stats"></div>
+    <div id="global-results" class="tbl-wrap" style="display:none;margin-bottom:20px">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Nombre</th><th>Hospital</th><th>Edad</th><th>Cédula</th><th>Dirección</th>
+          </tr>
+        </thead>
+        <tbody id="global-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="hosp-accordion" id="hosp-accordion">
+      <div style="padding:48px;text-align:center;color:var(--muted)">
+        <div style="font-size:36px;margin-bottom:12px">⏳</div>
+        <div style="font-size:14px">Cargando lista de pacientes desde Google Sheets...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+// ─── STATE ───────────────────────────────────────────────
+let PACIENTES = [];
+
+// ─── UTILS ───────────────────────────────────────────────
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function norm(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+}
+function hl(t, q) {
+  if (!q || !t) return esc(t || '');
+  return esc(t).replace(
+    new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','gi'),
+    '<mark class="highlight">$1</mark>'
+  );
+}
+function hospId(name) {
+  return 'h_' + name.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/[^a-z0-9]+/g,'_')
+    .replace(/^_+|_+$/g,'');
+}
+
+// ─── ACCORDION ───────────────────────────────────────────
+function toggleHosp(hdr, id) {
+  const body = document.getElementById(id);
+  const open = !body.classList.contains('open');
+  body.classList.toggle('open', open);
+  hdr.classList.toggle('open', open);
+  if (open && !hdr.dataset.loaded) {
+    hdr.dataset.loaded = '1';
+    limitRows(id, 20);
+  }
+}
+function limitRows(id, max) {
+  const rows = document.querySelectorAll('#list_' + id + ' .patient-row');
+  rows.forEach((r, i) => { r.style.display = i < max ? '' : 'none'; });
+  const m = document.getElementById('more_' + id);
+  if (m) m.style.display = rows.length > max ? '' : 'none';
+}
+function showAll(id) {
+  document.querySelectorAll('#list_' + id + ' .patient-row').forEach(r => { r.style.display = ''; });
+  const m = document.getElementById('more_' + id);
+  if (m) m.style.display = 'none';
+}
+function filterHosp(input, id) {
+  const q = norm(input.value);
+  document.querySelectorAll('#list_' + id + ' .patient-row').forEach(r => {
+    r.style.display = (!q || norm(r.dataset.nm || '').includes(q) || norm(r.dataset.ced || '').includes(q)) ? '' : 'none';
+  });
+  const m = document.getElementById('more_' + id);
+  if (m) m.style.display = 'none';
+}
+
+// ─── GLOBAL SEARCH ───────────────────────────────────────
+function globalSearch(q) {
+  const qn = norm(q);
+  const wrap = document.getElementById('global-results');
+  const tbody = document.getElementById('global-tbody');
+  const stats = document.getElementById('global-stats');
+  if (!qn || qn.length < 2) { wrap.style.display = 'none'; stats.innerHTML = ''; return; }
+  const hits = PACIENTES.filter(p => norm(p.nm).includes(qn) || norm(p.c).includes(qn));
+  if (!hits.length) {
+    wrap.style.display = 'none';
+    stats.innerHTML = 'Sin resultados para <strong>' + esc(q) + '</strong>';
+    return;
+  }
+  tbody.innerHTML = hits.slice(0,100).map(p =>
+    '<tr><td class="td-nm">' + hl(p.nm, q) + '</td>'
+    + '<td><span class="td-hosp">' + esc(p.h) + '</span></td>'
+    + '<td class="td-x">' + (esc(p.e) || '—') + '</td>'
+    + '<td class="td-x">' + hl(p.c, q) + '</td>'
+    + '<td class="td-x">' + (esc(p.d) || '—') + '</td></tr>'
+  ).join('');
+  wrap.style.display = '';
+  stats.innerHTML = '<strong>' + hits.length + '</strong> resultado' + (hits.length !== 1 ? 's' : '')
+    + ' para <strong>' + esc(q) + '</strong>' + (hits.length > 100 ? ' · primeros 100' : '');
+}
+
+// ─── CRUCE FAMILIAR ──────────────────────────────────────
+function buscarFamiliar() {
+  const nombre = norm(document.getElementById('cruce-nombre').value);
+  const cedula = document.getElementById('cruce-cedula').value.trim().replace(/[^0-9]/g,'');
+  const box = document.getElementById('cruce-results');
+  box.style.display = 'block';
+  if (!nombre && !cedula) {
+    box.innerHTML = '<p class="cruce-none">Ingresa un nombre o cédula para buscar.</p>';
+    return;
+  }
+  if (!PACIENTES.length) {
+    box.innerHTML = '<p class="cruce-none">Datos cargando, espera un momento...</p>';
+    return;
+  }
+  const matches = [];
+  for (const p of PACIENTES) {
+    let mN = false, mC = false;
+    if (nombre) {
+      const words = nombre.split(' ').filter(w => w.length > 2);
+      if (words.length) {
+        const hits = words.filter(w => norm(p.nm).includes(w));
+        mN = hits.length >= Math.min(2, words.length);
+      }
+    }
+    if (cedula && p.c) mC = p.c.replace(/[^0-9]/g,'') === cedula;
+    if (mN || mC) matches.push({ ...p, mN, mC });
+  }
+  if (!matches.length) {
+    box.innerHTML = '<div class="cruce-none">Sin coincidencias en listas actuales. Llama al hospital o '
+      + '<a href="https://desaparecidosterremotovenezuela.com/" target="_blank" style="color:var(--red);font-weight:700">repórtalo aquí →</a></div>';
+    return;
+  }
+  const rows = matches.map(p =>
+    '<li><strong>' + esc(p.nm) + '</strong>'
+    + (p.mC ? '<span class="cruce-match-badge match-cedula">Cédula</span>' : '')
+    + (p.mN && !p.mC ? '<span class="cruce-match-badge match-nombre">Nombre</span>' : '')
+    + '  ' + esc(p.h) + (p.e ? ' · ' + esc(p.e) + ' años' : '') + '</li>'
+  ).join('');
+  box.innerHTML = '<div class="cruce-alert"><h5>'
+    + matches.length + ' coincidencia' + (matches.length > 1 ? 's' : '') + ' encontrada' + (matches.length > 1 ? 's' : '')
+    + '</h5><ul>' + rows + '</ul>'
+    + '<p style="font-size:12px;color:var(--muted);margin-top:8px">Verifica llamando al hospital.</p></div>';
+}
+document.getElementById('cruce-nombre').addEventListener('keydown', e => { if (e.key === 'Enter') buscarFamiliar(); });
+document.getElementById('cruce-cedula').addEventListener('keydown', e => { if (e.key === 'Enter') buscarFamiliar(); });
+
+// ─── BUILD ACCORDION ─────────────────────────────────────
+function buildAccordion(patients) {
+  const byHosp = {};
+  for (const p of patients) {
+    if (!byHosp[p.h]) byHosp[p.h] = [];
+    byHosp[p.h].push(p);
+  }
+  const container = document.getElementById('hosp-accordion');
+  const entries = Object.entries(byHosp);
+  if (!entries.length) {
+    container.innerHTML = '<div class="no-res">No hay datos disponibles. Revisa la configuración de Google Sheets.</div>';
+    return;
+  }
+  container.innerHTML = entries.map(([hosp, pts]) => {
+    const id = hospId(hosp);
+    const isRefugio = /acopio|refugio|golf|campo/i.test(hosp);
+    const panelStyle = isRefugio ? 'border-color:#F59E0B' : '';
+    const headerBg = isRefugio ? 'background:#FEF8EE' : '';
+    const icon = isRefugio ? '🏕️' : '🏥';
+    const label = isRefugio ? 'personas' : 'pacientes';
+    const badgeStyle = isRefugio ? 'background:#FEF3CD;color:#92400E' : '';
+    const bodyBorder = isRefugio ? 'border-top:1px solid #F59E0B' : '';
+    const searchBg = isRefugio ? 'background:#FFFBEB' : '';
+    const warning = isRefugio
+      ? `<div style="background:#FFFBEB;padding:10px 16px;font-size:12px;color:#92400E;border-bottom:1px solid #F59E0B">⚠️ Estas personas <strong>no están hospitalizadas</strong> — se encuentran en un centro de acopio.</div>`
+      : '';
+    const rowsHtml = pts.map(p => {
+      const nmKey = norm(p.nm);
+      const cedKey = (p.c || '').replace(/[^0-9]/g,'');
+      return `<li class="patient-row" data-nm="${esc(nmKey)}" data-ced="${esc(cedKey)}">
+        <div>
+          <div class="patient-nm">${esc(p.nm)}</div>
+          ${p.d ? `<div class="patient-detail">${esc(p.d)}</div>` : ''}
+        </div>
+        <div class="patient-tags">
+          ${isRefugio ? '<span class="ptag" style="background:#FEF3CD;color:#92400E">Refugio</span>' : ''}
+          ${p.e ? `<span class="ptag ptag-age">${esc(p.e)}</span>` : ''}
+          ${p.c && !isRefugio ? `<span class="ptag ptag-ced">${esc(p.c)}</span>` : ''}
+        </div>
+      </li>`;
+    }).join('');
+    return `<div class="hosp-panel" style="${panelStyle}">
+      <div class="hosp-header" onclick="toggleHosp(this,'${id}')" style="${headerBg}">
+        <div class="hosp-header-left">
+          <span class="hosp-name">${icon} ${esc(hosp)}</span>
+          <span class="hosp-badge" style="${badgeStyle}">${pts.length} ${label}</span>
+        </div>
+        <span class="hosp-chevron">▼</span>
+      </div>
+      <div class="hosp-body" id="${id}" style="${bodyBorder}">
+        <div class="hosp-search-row" style="${searchBg}">
+          <input class="hosp-search" type="search"
+            placeholder="Buscar en este ${isRefugio ? 'refugio' : 'hospital'}..."
+            oninput="filterHosp(this,'${id}')"
+            autocomplete="off" autocorrect="off" spellcheck="false"/>
+        </div>
+        ${warning}
+        <ul class="patient-list" id="list_${id}">${rowsHtml}</ul>
+        <div class="hosp-show-more" id="more_${id}" style="display:none">
+          <button onclick="showAll('${id}')">Ver los ${pts.length} ${label} ↓</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── LOAD DATA ───────────────────────────────────────────
+async function loadPatients() {
+  try {
+    const res = await fetch('/api/pacientes');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    PACIENTES = await res.json();
+    buildAccordion(PACIENTES);
+    const statsEl = document.getElementById('pacientes-stats');
+    if (statsEl) {
+      const total = PACIENTES.length;
+      const centers = new Set(PACIENTES.map(p => p.h)).size;
+      const now = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
+      statsEl.textContent = `${total} registros · ${centers} centros · Actualizado ${now}`;
+    }
+  } catch (err) {
+    console.error('[Buscador]', err);
+    document.getElementById('hosp-accordion').innerHTML =
+      '<div class="no-res">Error al cargar datos. '
+      + '<button onclick="loadPatients()" style="color:var(--blue);font-weight:700;background:none;border:none;cursor:pointer">Reintentar →</button></div>';
+  }
+}
+
+// ─── NAV ACTIVE ──────────────────────────────────────────
+document.querySelectorAll('section[id]').forEach(s =>
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('#main-nav a').forEach(l =>
+          l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id)
+        );
+      }
+    });
+  }, { threshold: 0.25 }).observe(s)
+);
+
+// ─── SMOOTH SCROLL ───────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+loadPatients();
+</script>
