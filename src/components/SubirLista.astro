@@ -44,7 +44,7 @@
           <div class="dropzone" id="dropzone">
             <input type="file" id="f-archivo" name="archivo"
               accept=".xlsx,.xls,.csv,.pdf,.docx,.jpg,.jpeg,.png,.txt,.ods,.heic,.webp"
-              onchange="onFile(this)"/>
+              required onchange="onFile(this)"/>
             <div class="dz-icon">📎</div>
             <div class="dz-main">Arrastra aquí o toca para seleccionar</div>
             <div class="dz-sub">Una foto del tablón, un Excel, un PDF, lo que tengas</div>
@@ -84,8 +84,8 @@
 
       <div class="upload-ok" id="upload-ok">
         <div class="ok-icon">✅</div>
-        <h4>¡Datos recibidos!</h4>
-        <p>Recibimos la información del centro de salud. <strong>Por favor envía el archivo con la lista</strong> al correo <a href="mailto:info@redsolidariavenezuela.com?subject=Lista%20pacientes" style="color:var(--blue)">info@redsolidariavenezuela.com</a> para completar el reporte. Lo publicamos en menos de una hora.</p>
+        <h4>¡Lista enviada!</h4>
+        <p>Recibimos la lista con el archivo adjunto. La revisamos y publicamos en menos de una hora. Gracias por ayudar.</p>
       </div>
     </div>
   </div>
@@ -115,30 +115,25 @@ function submitLista(e) {
   const btn = document.getElementById('submit-btn');
   btn.textContent = 'Enviando...';
   btn.disabled = true;
-  const hospital = document.getElementById('f-hospital').value;
-  const reporte  = document.getElementById('f-reporte').value;
-  const contacto = document.getElementById('f-contacto').value;
-  const data = new FormData();
-  data.append('hospital', hospital);
-  data.append('tipo_reporte', reporte);
-  data.append('contacto', contacto);
-  fetch('https://formspree.io/f/xkolrddo', {
+  const data = new FormData(document.getElementById('lista-form'));
+  data.append('_captcha', 'false');
+  data.append('_subject', 'Nueva lista — ' + document.getElementById('f-hospital').value);
+  fetch('https://formsubmit.co/ajax/info@redsolidariavenezuela.com', {
     method: 'POST',
     body: data,
     headers: { 'Accept': 'application/json' }
   })
-  .then(res => {
-    if (res.ok) {
+  .then(res => res.json())
+  .then(data => {
+    if (data.success === 'true' || data.success === true) {
       document.getElementById('lista-form').style.display = 'none';
       document.getElementById('upload-ok').style.display = 'block';
     } else {
-      res.json().then(d => console.error('Formspree error:', d));
       btn.textContent = '⚠️ Error al enviar. Intenta de nuevo.';
       btn.disabled = false;
     }
   })
-  .catch(err => {
-    console.error(err);
+  .catch(() => {
     btn.textContent = '⚠️ Error de conexión. Intenta de nuevo.';
     btn.disabled = false;
   });
