@@ -107,11 +107,14 @@ const structuredData = JSON.stringify([
   <!-- Structured Data -->
   <script type="application/ld+json" set:html={structuredData}></script>
 
-  <!-- Fonts -->
+  <!-- Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link rel="preconnect" href="https://sheets.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400&display=swap" rel="stylesheet"/>
+
+  <!-- Fonts — display=optional: browser renders immediately without waiting -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400&display=optional" as="style" onload="this.rel='stylesheet'"/>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400&display=optional" rel="stylesheet"/></noscript>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
