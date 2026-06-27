@@ -73,6 +73,9 @@ function submitLista(e) {
   const hospital = document.getElementById('f-hospital').value;
   const reporte  = document.getElementById('f-reporte').value;
   const data = new FormData(document.getElementById('lista-form'));
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'lista_form_submit', hospital: hospital, tipo_reporte: reporte });
+
   fetch('https://formspree.io/f/xkolrddo', {
     method: 'POST',
     body: data,
@@ -81,6 +84,7 @@ function submitLista(e) {
   .then(res => res.json())
   .then(json => {
     if (json.ok || json.next) {
+      window.dataLayer.push({ event: 'lista_form_success', hospital: hospital, tipo_reporte: reporte });
       const subject = encodeURIComponent('Lista pacientes — ' + hospital + (reporte ? ' · ' + reporte : ''));
       const body    = encodeURIComponent('Hola, adjunto la lista de pacientes del ' + hospital + '.\n\n(Adjunta aquí tu archivo Excel, PDF o Word)');
       document.getElementById('mailto-link').href =

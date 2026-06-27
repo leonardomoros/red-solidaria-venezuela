@@ -141,6 +141,8 @@ function buscarFamiliar() {
   const cedula = document.getElementById('cruce-cedula').value.trim().replace(/[^0-9]/g,'');
   const box = document.getElementById('cruce-results');
   box.style.display = 'block';
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'buscar_familiar', tipo: cedula ? 'cedula' : 'nombre' });
   if (!nombre && !cedula) {
     box.innerHTML = '<p class="cruce-none">Ingresa un nombre o cédula para buscar.</p>';
     return;
