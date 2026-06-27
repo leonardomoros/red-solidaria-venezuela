@@ -44,7 +44,7 @@
           <div class="dropzone" id="dropzone">
             <input type="file" id="f-archivo" name="archivo"
               accept=".xlsx,.xls,.csv,.pdf,.docx,.jpg,.jpeg,.png,.txt,.ods,.heic,.webp"
-              required onchange="onFile(this)"/>
+              onchange="onFile(this)"/>
             <div class="dz-icon">📎</div>
             <div class="dz-main">Arrastra aquí o toca para seleccionar</div>
             <div class="dz-sub">Una foto del tablón, un Excel, un PDF, lo que tengas</div>
@@ -84,8 +84,8 @@
 
       <div class="upload-ok" id="upload-ok">
         <div class="ok-icon">✅</div>
-        <h4>¡Lista recibida!</h4>
-        <p>Revisamos y publicamos en menos de una hora. Gracias por ayudar.</p>
+        <h4>¡Datos recibidos!</h4>
+        <p>Recibimos la información del centro de salud. <strong>Por favor envía el archivo con la lista</strong> al correo <a href="mailto:info@redsolidariavenezuela.com?subject=Lista%20pacientes" style="color:var(--blue)">info@redsolidariavenezuela.com</a> para completar el reporte. Lo publicamos en menos de una hora.</p>
       </div>
     </div>
   </div>
@@ -118,12 +118,10 @@ function submitLista(e) {
   const hospital = document.getElementById('f-hospital').value;
   const reporte  = document.getElementById('f-reporte').value;
   const contacto = document.getElementById('f-contacto').value;
-  const archivo  = document.getElementById('f-archivo').files[0];
   const data = new FormData();
   data.append('hospital', hospital);
   data.append('tipo_reporte', reporte);
   data.append('contacto', contacto);
-  if (archivo) data.append('archivo', archivo);
   fetch('https://formspree.io/f/xkolrddo', {
     method: 'POST',
     body: data,
