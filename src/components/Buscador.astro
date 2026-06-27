@@ -291,7 +291,10 @@ async function loadPatients() {
     }
   } catch (err) {
     console.error('[Buscador]', err);
-    accordion.innerHTML = '<div class="no-res">Error al cargar datos. '
+    accordion.innerHTML = '<div class="no-res" style="font-size:13px">'
+      + 'Error: ' + String(err) + '<br><br>'
+      + 'SheetID: ' + (SHEET_ID ? SHEET_ID.slice(0,8) + '...' : 'VACIO') + '<br>'
+      + 'APIKey: ' + (API_KEY ? API_KEY.slice(0,8) + '...' : 'VACIO') + '<br><br>'
       + '<button onclick="loadPatients()" style="color:var(--blue);font-weight:700;background:none;border:none;cursor:pointer">Reintentar →</button></div>';
   }
 }
