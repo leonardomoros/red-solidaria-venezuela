@@ -1,7 +1,4 @@
 ---
-const SHEET_ID = import.meta.env.PUBLIC_GOOGLE_SHEETS_ID || '1FlFw-guJpiQED_EsR_YJyUhzANy_1HU84_loZqH4_CY';
-const API_KEY  = import.meta.env.PUBLIC_GOOGLE_SHEETS_API_KEY || 'AIzaSyCtG3uppOIps8UGNETdMa5ZCNEt7ffYUFQ';
-const RANGE    = import.meta.env.PUBLIC_GOOGLE_SHEETS_RANGE || 'Pacientes!A:H';
 ---
 <section id="hospitales">
   <div class="container">
@@ -63,7 +60,10 @@ const RANGE    = import.meta.env.PUBLIC_GOOGLE_SHEETS_RANGE || 'Pacientes!A:H';
   </div>
 </section>
 
-<script is:inline define:vars={{ SHEET_ID, API_KEY, RANGE }}>
+<script is:inline>
+var SHEET_ID = '1FlFw-guJpiQED_EsR_YJyUhzANy_1HU84_loZqH4_CY';
+var API_KEY  = 'AIzaSyCtG3uppOIps8UGNETdMa5ZCNEt7ffYUFQ';
+var RANGE    = 'Pacientes!A:H';
 // ─── STATE ───────────────────────────────────────────────
 let PACIENTES = [];
 
