@@ -18,7 +18,7 @@
       <div class="fn-carousel-wrap">
         <div class="fn-carousel-track" id="fn-track">
 
-          <div class="fn-slide" role="group" aria-label="Jornada 1 de 2">
+          <div class="fn-slide" role="group" aria-label="Jornada 1 de 3">
             <div class="fn-slide-org">Centro Médico de Caracas</div>
             <div class="fn-slide-name">Jornada Solidaria<br>#SismoVenezuela</div>
             <div class="fn-slide-row"><span aria-hidden="true">📅</span> Sáb 27 de junio</div>
@@ -27,7 +27,7 @@
             <div class="fn-slide-badge">1 donante salva 3 vidas</div>
           </div>
 
-          <div class="fn-slide" role="group" aria-label="Jornada 2 de 2">
+          <div class="fn-slide" role="group" aria-label="Jornada 2 de 3">
             <div class="fn-slide-org">IVSS · Ministerio de Trabajo</div>
             <div class="fn-slide-name">Jornada Donantes<br>Voluntarios</div>
             <div class="fn-slide-row"><span aria-hidden="true">📅</span> 26 al 28 de junio</div>
@@ -37,12 +37,22 @@
             <div class="fn-slide-row"><span aria-hidden="true">📍</span> Hospital Pérez Carreño</div>
           </div>
 
+          <div class="fn-slide fn-slide-green" role="group" aria-label="Slide 3 de 3">
+            <div class="fn-slide-org">Parque del Este · Caracas</div>
+            <div class="fn-slide-name">¿Qué llevar<br>al punto de acopio?</div>
+            <div class="fn-slide-row"><span aria-hidden="true">✅</span> <strong>Insumos médicos</strong> — lo más urgente</div>
+            <div class="fn-slide-row"><span aria-hidden="true">🥫</span> Comida <strong>no perecedera</strong></div>
+            <div class="fn-slide-row"><span aria-hidden="true">💧</span> Agua embotellada</div>
+            <div class="fn-slide-badge fn-slide-badge-warn"><span aria-hidden="true">🚫</span> No traigan más ropa — hay suficiente en La Guaira</div>
+          </div>
+
         </div>
       </div>
 
       <div class="fn-dots" role="tablist" aria-label="Navegación del carrusel">
         <button class="fn-dot fn-dot-on" onclick="fnGo(0)" aria-label="Jornada 1" role="tab" aria-selected="true"></button>
         <button class="fn-dot" onclick="fnGo(1)" aria-label="Jornada 2" role="tab" aria-selected="false"></button>
+        <button class="fn-dot" onclick="fnGo(2)" aria-label="Qué llevar" role="tab" aria-selected="false"></button>
       </div>
 
       <a href="#sangre" class="fn-blood-link">Ver todos los bancos de sangre →</a>
@@ -75,7 +85,7 @@
 
 <script is:inline>
 (function () {
-  var cur = 0, tot = 2, timer;
+  var cur = 0, tot = 3, timer;
 
   function fnGo(n) {
     cur = n;

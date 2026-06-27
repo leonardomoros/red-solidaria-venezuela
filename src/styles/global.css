@@ -129,6 +129,8 @@ nav a:hover,nav a.active{background:var(--text);color:#fff;border-color:var(--te
 .fn-slide-row{font-size:12px;opacity:.9;display:flex;align-items:flex-start;gap:6px;line-height:1.45}
 .fn-slide-sub{font-size:10px;opacity:.75;display:block;margin-top:1px}
 .fn-slide-badge{margin-top:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.18);padding:6px 10px;border-radius:6px;text-align:center}
+.fn-slide-badge-warn{background:rgba(0,0,0,.25);color:#FFD580}
+.fn-slide-green{background:linear-gradient(155deg,#0A4A1F 0%,#1A7A38 100%);border-radius:8px;padding:10px 12px;margin:0 -4px}
 .fn-dots{display:flex;gap:7px;justify-content:center;padding:4px 0}
 .fn-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.28);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s;flex-shrink:0}
 .fn-dot-on{background:#fff;transform:scale(1.25)}
