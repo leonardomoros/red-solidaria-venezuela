@@ -15,10 +15,10 @@
     </div>
 
     <div class="upload-card">
-      <form id="lista-form" action="https://formsubmit.co/info@redsolidariavenezuela.com" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="_captcha" value="false"/>
-        <input type="hidden" name="_subject" value="Nueva lista de pacientes — Red Solidaria Venezuela"/>
-        <input type="hidden" name="_next" value="https://www.redsolidariavenezuela.com/?enviado=1#subir-lista"/>
+      <form id="lista-form" onsubmit="submitLista(event)">
+        <input type="hidden" name="access_key" value="2e9662c3-5b13-4027-9492-f26d61908710"/>
+        <input type="hidden" name="subject" value="Nueva lista de pacientes — Red Solidaria Venezuela"/>
+        <input type="hidden" name="from_name" value="Red Solidaria Venezuela"/>
         <div class="form-row">
           <div class="form-group full">
             <label class="f-label" for="f-hospital">Centro de salud <span class="req">*</span></label>
@@ -113,10 +113,29 @@ if (dz) {
     }
   });
 }
-if (new URLSearchParams(window.location.search).get('enviado') === '1') {
-  const form = document.getElementById('lista-form');
-  const ok   = document.getElementById('upload-ok');
-  if (form) form.style.display = 'none';
-  if (ok)   ok.style.display = 'block';
+function submitLista(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+  const data = new FormData(document.getElementById('lista-form'));
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    body: data
+  })
+  .then(res => res.json())
+  .then(json => {
+    if (json.success) {
+      document.getElementById('lista-form').style.display = 'none';
+      document.getElementById('upload-ok').style.display = 'block';
+    } else {
+      btn.textContent = '⚠️ Error al enviar. Intenta de nuevo.';
+      btn.disabled = false;
+    }
+  })
+  .catch(() => {
+    btn.textContent = '⚠️ Error de conexión. Intenta de nuevo.';
+    btn.disabled = false;
+  });
 }
 </script>
