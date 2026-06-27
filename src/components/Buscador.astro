@@ -1,4 +1,7 @@
 ---
+const SHEET_ID = import.meta.env.PUBLIC_GOOGLE_SHEETS_ID || '';
+const API_KEY  = import.meta.env.PUBLIC_GOOGLE_SHEETS_API_KEY || '';
+const RANGE    = import.meta.env.PUBLIC_GOOGLE_SHEETS_RANGE || 'Pacientes!A:H';
 ---
 <section id="hospitales">
   <div class="container">
@@ -60,7 +63,7 @@
   </div>
 </section>
 
-<script is:inline>
+<script is:inline define:vars={{ SHEET_ID, API_KEY, RANGE }}>
 // ─── STATE ───────────────────────────────────────────────
 let PACIENTES = [];
 
@@ -197,7 +200,7 @@ function buildAccordion(patients) {
   const container = document.getElementById('hosp-accordion');
   const entries = Object.entries(byHosp);
   if (!entries.length) {
-    container.innerHTML = '<div class="no-res">No hay datos disponibles. Revisa la configuración de Google Sheets.</div>';
+    container.innerHTML = '<div class="no-res">No hay datos en la hoja. Verifica que existan filas en la pestaña "Pacientes".</div>';
     return;
   }
   container.innerHTML = entries.map(([hosp, pts]) => {
@@ -211,86 +214,104 @@ function buildAccordion(patients) {
     const bodyBorder = isRefugio ? 'border-top:1px solid #F59E0B' : '';
     const searchBg = isRefugio ? 'background:#FFFBEB' : '';
     const warning = isRefugio
-      ? `<div style="background:#FFFBEB;padding:10px 16px;font-size:12px;color:#92400E;border-bottom:1px solid #F59E0B">⚠️ Estas personas <strong>no están hospitalizadas</strong> — se encuentran en un centro de acopio.</div>`
+      ? '<div style="background:#FFFBEB;padding:10px 16px;font-size:12px;color:#92400E;border-bottom:1px solid #F59E0B">⚠️ Estas personas <strong>no están hospitalizadas</strong> — se encuentran en un centro de acopio.</div>'
       : '';
     const rowsHtml = pts.map(p => {
       const nmKey = norm(p.nm);
       const cedKey = (p.c || '').replace(/[^0-9]/g,'');
-      return `<li class="patient-row" data-nm="${esc(nmKey)}" data-ced="${esc(cedKey)}">
-        <div>
-          <div class="patient-nm">${esc(p.nm)}</div>
-          ${p.d ? `<div class="patient-detail">${esc(p.d)}</div>` : ''}
-        </div>
-        <div class="patient-tags">
-          ${isRefugio ? '<span class="ptag" style="background:#FEF3CD;color:#92400E">Refugio</span>' : ''}
-          ${p.e ? `<span class="ptag ptag-age">${esc(p.e)}</span>` : ''}
-          ${p.c && !isRefugio ? `<span class="ptag ptag-ced">${esc(p.c)}</span>` : ''}
-        </div>
-      </li>`;
+      return '<li class="patient-row" data-nm="' + esc(nmKey) + '" data-ced="' + esc(cedKey) + '">'
+        + '<div>'
+        + '<div class="patient-nm">' + esc(p.nm) + '</div>'
+        + (p.d ? '<div class="patient-detail">' + esc(p.d) + '</div>' : '')
+        + '</div>'
+        + '<div class="patient-tags">'
+        + (isRefugio ? '<span class="ptag" style="background:#FEF3CD;color:#92400E">Refugio</span>' : '')
+        + (p.e ? '<span class="ptag ptag-age">' + esc(p.e) + '</span>' : '')
+        + (p.c && !isRefugio ? '<span class="ptag ptag-ced">' + esc(p.c) + '</span>' : '')
+        + '</div>'
+        + '</li>';
     }).join('');
-    return `<div class="hosp-panel" style="${panelStyle}">
-      <div class="hosp-header" onclick="toggleHosp(this,'${id}')" style="${headerBg}">
-        <div class="hosp-header-left">
-          <span class="hosp-name">${icon} ${esc(hosp)}</span>
-          <span class="hosp-badge" style="${badgeStyle}">${pts.length} ${label}</span>
-        </div>
-        <span class="hosp-chevron">▼</span>
-      </div>
-      <div class="hosp-body" id="${id}" style="${bodyBorder}">
-        <div class="hosp-search-row" style="${searchBg}">
-          <input class="hosp-search" type="search"
-            placeholder="Buscar en este ${isRefugio ? 'refugio' : 'hospital'}..."
-            oninput="filterHosp(this,'${id}')"
-            autocomplete="off" autocorrect="off" spellcheck="false"/>
-        </div>
-        ${warning}
-        <ul class="patient-list" id="list_${id}">${rowsHtml}</ul>
-        <div class="hosp-show-more" id="more_${id}" style="display:none">
-          <button onclick="showAll('${id}')">Ver los ${pts.length} ${label} ↓</button>
-        </div>
-      </div>
-    </div>`;
+    return '<div class="hosp-panel" style="' + panelStyle + '">'
+      + '<div class="hosp-header" onclick="toggleHosp(this,\'' + id + '\')" style="' + headerBg + '">'
+      + '<div class="hosp-header-left">'
+      + '<span class="hosp-name">' + icon + ' ' + esc(hosp) + '</span>'
+      + '<span class="hosp-badge" style="' + badgeStyle + '">' + pts.length + ' ' + label + '</span>'
+      + '</div>'
+      + '<span class="hosp-chevron">▼</span>'
+      + '</div>'
+      + '<div class="hosp-body" id="' + id + '" style="' + bodyBorder + '">'
+      + '<div class="hosp-search-row" style="' + searchBg + '">'
+      + '<input class="hosp-search" type="search" placeholder="Buscar en este ' + (isRefugio ? 'refugio' : 'hospital') + '..." oninput="filterHosp(this,\'' + id + '\')" autocomplete="off" autocorrect="off" spellcheck="false"/>'
+      + '</div>'
+      + warning
+      + '<ul class="patient-list" id="list_' + id + '">' + rowsHtml + '</ul>'
+      + '<div class="hosp-show-more" id="more_' + id + '" style="display:none">'
+      + '<button onclick="showAll(\'' + id + '\')">Ver los ' + pts.length + ' ' + label + ' ↓</button>'
+      + '</div>'
+      + '</div>'
+      + '</div>';
   }).join('');
 }
 
 // ─── LOAD DATA ───────────────────────────────────────────
 async function loadPatients() {
+  const accordion = document.getElementById('hosp-accordion');
   try {
-    const res = await fetch('/api/pacientes');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    PACIENTES = await res.json();
+    if (!SHEET_ID || !API_KEY) {
+      accordion.innerHTML = '<div class="no-res">Configuración de Google Sheets no encontrada.</div>';
+      return;
+    }
+    const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + encodeURIComponent(RANGE) + '?key=' + API_KEY;
+    const res = await fetch(url);
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error('Sheets API ' + res.status + ': ' + txt.slice(0, 200));
+    }
+    const data = await res.json();
+    const rows = data.values || [];
+    PACIENTES = rows.slice(1).filter(function(row) { return row[2] && row[2].trim(); }).map(function(row, i) {
+      return {
+        n: i + 1,
+        h: (row[1] || '').trim(),
+        nm: (row[2] || '').trim().toUpperCase(),
+        e: (row[3] || '').trim(),
+        c: (row[4] || '').trim(),
+        t: (row[5] || '').trim(),
+        d: (row[6] || '').trim(),
+        o: (row[7] || '').trim(),
+      };
+    });
     buildAccordion(PACIENTES);
     const statsEl = document.getElementById('pacientes-stats');
     if (statsEl) {
       const total = PACIENTES.length;
-      const centers = new Set(PACIENTES.map(p => p.h)).size;
+      const centers = new Set(PACIENTES.map(function(p) { return p.h; })).size;
       const now = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
-      statsEl.textContent = `${total} registros · ${centers} centros · Actualizado ${now}`;
+      statsEl.textContent = total + ' registros · ' + centers + ' centros · Actualizado ' + now;
     }
   } catch (err) {
     console.error('[Buscador]', err);
-    document.getElementById('hosp-accordion').innerHTML =
-      '<div class="no-res">Error al cargar datos. '
+    accordion.innerHTML = '<div class="no-res">Error al cargar datos. '
       + '<button onclick="loadPatients()" style="color:var(--blue);font-weight:700;background:none;border:none;cursor:pointer">Reintentar →</button></div>';
   }
 }
 
 // ─── NAV ACTIVE ──────────────────────────────────────────
-document.querySelectorAll('section[id]').forEach(s =>
-  new IntersectionObserver(entries => {
-    entries.forEach(e => {
+document.querySelectorAll('section[id]').forEach(function(s) {
+  new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
       if (e.isIntersecting) {
-        document.querySelectorAll('#main-nav a').forEach(l =>
-          l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id)
-        );
+        document.querySelectorAll('#main-nav a').forEach(function(l) {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id);
+        });
       }
     });
-  }, { threshold: 0.25 }).observe(s)
-);
+  }, { threshold: 0.25 }).observe(s);
+});
 
 // ─── SMOOTH SCROLL ───────────────────────────────────────
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
     const t = document.querySelector(a.getAttribute('href'));
     if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
