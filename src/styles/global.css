@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/fraunces";
 
 :root {
   --bg:#F7F6F2; --surface:#fff; --border:#E2E0D9;
