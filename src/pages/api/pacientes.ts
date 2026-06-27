@@ -16,7 +16,7 @@ export const GET: APIRoute = async () => {
 
   try {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(range)}?key=${apiKey}`;
-    const res = await fetch(url, { next: { revalidate: 300 } } as RequestInit);
+    const res = await fetch(url);
 
     if (!res.ok) {
       throw new Error(`Sheets API ${res.status}`);
