@@ -258,7 +258,7 @@ section+section{border-top:1px solid var(--border)}
 .psico-signals{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
 .psico-signal{background:#fff;border:1px solid #DDD6FE;border-radius:7px;padding:10px 12px;font-size:12px;color:var(--text)}
 .psico-signal strong{display:block;font-weight:700;color:#6D28D9;margin-bottom:2px}
-.crisis-box{background:#7B3F9E;color:#fff;border-radius:var(--r);padding:20px 24px;margin-top:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.crisis-box{background:#7B3F9E;color:#fff;border-radius:var(--r);padding:20px 24px;margin-top:20px;display:flex;flex-direction:column;gap:16px}
 .crisis-box p{flex:1;font-size:14px;line-height:1.6;color:#E9D5FF}
 .crisis-box strong{color:#fff}
 .btn-purple{background:#fff;color:#7B3F9E;font-weight:700;padding:11px 20px;border-radius:8px;font-size:14px;white-space:nowrap;text-decoration:none;display:inline-block}
