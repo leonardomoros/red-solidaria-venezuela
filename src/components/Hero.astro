@@ -13,7 +13,7 @@
         <span class="fn-blood-pulse" aria-hidden="true"></span>
         <span class="fn-blood-label">JORNADAS ACTIVAS</span>
       </div>
-      <h2 class="fn-blood-title">Donar Sangre</h2>
+      <h2 class="fn-blood-title" id="fn-card-title">Donar Sangre</h2>
 
       <div class="fn-carousel-wrap">
         <div class="fn-carousel-track" id="fn-track">
@@ -86,6 +86,12 @@
 <script is:inline>
 (function () {
   var cur = 0, tot = 3, timer;
+  var fnTitles = ['Donar Sangre', 'Donar Sangre', 'Centro de Acopio'];
+  var fnLinks  = [
+    { text: 'Ver todos los bancos de sangre →', href: '#sangre' },
+    { text: 'Ver todos los bancos de sangre →', href: '#sangre' },
+    { text: 'Ver más sobre qué donar →',        href: '#que-donar' }
+  ];
 
   function fnGo(n) {
     cur = n;
@@ -95,6 +101,10 @@
       d.classList.toggle('fn-dot-on', i === n);
       d.setAttribute('aria-selected', i === n ? 'true' : 'false');
     });
+    var titleEl = document.getElementById('fn-card-title');
+    if (titleEl) titleEl.textContent = fnTitles[n];
+    var linkEl = document.querySelector('.fn-blood-link');
+    if (linkEl) { linkEl.textContent = fnLinks[n].text; linkEl.href = fnLinks[n].href; }
   }
   function fnNext() { fnGo((cur + 1) % tot); }
 
