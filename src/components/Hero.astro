@@ -37,9 +37,28 @@
             <div class="fn-slide-row"><span aria-hidden="true">📍</span> Hospital Pérez Carreño</div>
           </div>
 
-          <div class="fn-slide fn-slide-green" role="group" aria-label="Slide 3 de 3">
+          <div class="fn-slide fn-slide-green" role="group" aria-label="Slide 3 de 4">
+            <div class="fn-slide-org">Terrazas de San Diego · Carabobo</div>
+            <div class="fn-slide-name">Detrás del CC Fin de Siglo</div>
+            <div class="fn-slide-needs">Necesitamos <span aria-hidden="true">!</span></div>
+            <ul class="fn-slide-items">
+              <li>Velas</li>
+              <li>Sábanas</li>
+              <li>Acetaminofén ped.</li>
+              <li>Cetirizina ped.</li>
+              <li>Crema de arroz</li>
+              <li>Diclofenac</li>
+              <li>Agua</li>
+              <li>Anticonvulsivo</li>
+              <li>Pañales adulto</li>
+              <li>Valsartan</li>
+            </ul>
+            <div class="fn-slide-badge">Cualquier donativo cuenta</div>
+          </div>
+
+          <div class="fn-slide fn-slide-green" role="group" aria-label="Slide 4 de 4">
             <div class="fn-slide-org">Parque del Este · Caracas</div>
-            <div class="fn-slide-name">¿Qué llevar<br>al punto de acopio?</div>
+            <div class="fn-slide-name">¿Qué llevar al punto de acopio?</div>
             <div class="fn-slide-row"><span aria-hidden="true">✅</span> <strong>Insumos médicos</strong> — lo más urgente</div>
             <div class="fn-slide-row"><span aria-hidden="true">🥫</span> Comida <strong>no perecedera</strong></div>
             <div class="fn-slide-row"><span aria-hidden="true">💧</span> Agua embotellada</div>
@@ -52,7 +71,8 @@
       <div class="fn-dots" role="tablist" aria-label="Navegación del carrusel">
         <button class="fn-dot fn-dot-on" onclick="fnGo(0)" aria-label="Jornada 1" role="tab" aria-selected="true"></button>
         <button class="fn-dot" onclick="fnGo(1)" aria-label="Jornada 2" role="tab" aria-selected="false"></button>
-        <button class="fn-dot" onclick="fnGo(2)" aria-label="Qué llevar" role="tab" aria-selected="false"></button>
+        <button class="fn-dot" onclick="fnGo(2)" aria-label="Terrazas de San Diego" role="tab" aria-selected="false"></button>
+        <button class="fn-dot" onclick="fnGo(3)" aria-label="Parque del Este" role="tab" aria-selected="false"></button>
       </div>
 
       <a href="#sangre" class="fn-blood-link">Ver todos los bancos de sangre →</a>
@@ -85,11 +105,12 @@
 
 <script is:inline>
 (function () {
-  var cur = 0, tot = 3, timer;
-  var fnTitles = ['Donar Sangre', 'Donar Sangre', 'Centro de Acopio'];
+  var cur = 0, tot = 4, timer;
+  var fnTitles = ['Donar Sangre', 'Donar Sangre', 'Centro de Acopio', 'Centro de Acopio'];
   var fnLinks  = [
     { text: 'Ver todos los bancos de sangre →', href: '#sangre' },
     { text: 'Ver todos los bancos de sangre →', href: '#sangre' },
+    { text: 'Ver más sobre qué donar →',        href: '#que-donar' },
     { text: 'Ver más sobre qué donar →',        href: '#que-donar' }
   ];
 

@@ -131,6 +131,10 @@ nav a:hover,nav a.active{background:var(--text);color:#fff;border-color:var(--te
 .fn-slide-badge{margin-top:4px;font-size:11px;font-weight:700;background:#FEF3C7;color:#92400E;padding:6px 10px;border-radius:6px;text-align:center}
 .fn-slide-badge-warn{background:#FEE2E2;color:#991B1B;text-align:left}
 .fn-slide-green{background:#F0FDF4;border-radius:8px;padding:10px 12px;border-left:3px solid #16A34A}
+.fn-slide-needs{font-size:11px;font-weight:800;color:#15803D;text-transform:uppercase;letter-spacing:.06em;margin:2px 0}
+.fn-slide-items{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;margin:0;padding:0;list-style:none}
+.fn-slide-items li{font-size:11.5px;color:#374151;line-height:1.5}
+.fn-slide-items li::before{content:"· ";color:#16A34A;font-weight:700}
 .fn-dots{display:flex;gap:7px;justify-content:center;padding:4px 0}
 .fn-dot{width:7px;height:7px;border-radius:50%;background:#CBD5E1;border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s;flex-shrink:0}
 .fn-dot-on{background:#1A4F91;transform:scale(1.25)}
