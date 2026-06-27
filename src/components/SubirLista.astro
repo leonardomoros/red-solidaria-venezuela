@@ -4,13 +4,13 @@
   <div class="container">
     <div class="s-eye">📤 Función 02</div>
     <h2 class="s-title">Sube una lista de tu centro de salud</h2>
-    <p class="s-sub">¿Trabajas en un hospital o eres voluntario? Envíanos la lista de pacientes. La publicamos en menos de una hora.</p>
+    <p class="s-sub">¿Trabajas en un hospital o eres voluntario? Envíanos la información. La publicamos en menos de una hora.</p>
 
     <div class="upload-hero">
       <div class="upload-hero-icon">📋</div>
       <div>
-        <h3>Cualquier archivo digital sirve.</h3>
-        <p>Excel, PDF, Word, CSV o texto plano. Si tienes la lista de pacientes del hospital en formato digital, envíanosla y la publicamos en menos de una hora.</p>
+        <h3>Llena el formulario y te decimos cómo enviar el archivo.</h3>
+        <p>Registra el centro de salud y tu contacto. Luego te indicamos cómo enviarnos la lista en Excel, PDF o Word.</p>
       </div>
     </div>
 
@@ -37,94 +37,54 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="f-label" for="f-contacto">Tu contacto (para confirmar)</label>
-            <input type="text" id="f-contacto" name="contacto" class="f-input" placeholder="Email o teléfono"/>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom:18px">
-          <label class="f-label">Adjunta tu lista <span class="req">*</span></label>
-          <div class="dropzone" id="dropzone">
-            <input type="file" id="f-archivo" name="archivo"
-              accept=".xlsx,.xls,.csv,.pdf,.docx,.txt,.ods"
-              required onchange="onFile(this)"/>
-            <div class="dz-icon">📎</div>
-            <div class="dz-main">Arrastra aquí o toca para seleccionar</div>
-            <div class="dz-sub">Excel, PDF, Word, CSV o texto</div>
-            <div class="dz-fmts">
-              <span class="fmt">📊 Excel</span>
-              <span class="fmt">📄 PDF</span>
-              <span class="fmt">📝 Word</span>
-              <span class="fmt">📋 CSV</span>
-              <span class="fmt">📃 Texto</span>
-            </div>
-            <div class="dz-file" id="dz-fname"></div>
+            <label class="f-label" for="f-contacto">Tu correo o teléfono <span class="req">*</span></label>
+            <input type="text" id="f-contacto" name="contacto" class="f-input" placeholder="Para confirmarte cuando lo publiquemos" required/>
           </div>
         </div>
 
         <div class="upload-footer">
           <button type="submit" class="btn-blue" id="submit-btn"
             style="font-size:16px;padding:14px 28px">
-            📤 Enviar lista al equipo →
+            Registrar centro de salud →
           </button>
         </div>
       </form>
 
-      <div style="background:#EEF3FB;border:2px solid #1A4F91;border-radius:10px;padding:18px 20px;margin-top:20px">
-        <div style="font-size:12px;font-weight:700;color:#1A4F91;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">¿Prefieres enviar por correo?</div>
-        <div style="font-size:13px;font-weight:800;color:#1A1918;margin-bottom:4px;white-space:nowrap">info@redsolidariavenezuela.com</div>
-        <div style="font-size:13px;color:#6B6760;margin-bottom:14px">Adjunta tu lista con el nombre del hospital o refugio. Te respondemos en menos de una hora.</div>
-        <a href="mailto:info@redsolidariavenezuela.com?subject=Lista%20pacientes%20terremoto%202026"
-          style="background:#1A4F91;color:#fff;padding:12px 22px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block">
-          📧 Enviar correo →
-        </a>
-      </div>
-
-      <div style="font-size:12px;color:#6B6760;margin-top:10px;text-align:center">
-        Solo es obligatorio el centro de salud y el archivo · Te confirmamos cuando lo publiquemos
-      </div>
-
-      <div class="upload-ok" id="upload-ok">
+      <div class="upload-ok" id="upload-ok" style="display:none">
         <div class="ok-icon">✅</div>
-        <h4>¡Lista enviada!</h4>
-        <p>Recibimos la lista con el archivo adjunto. La revisamos y publicamos en menos de una hora. Gracias por ayudar.</p>
+        <h4>¡Registro recibido!</h4>
+        <p>Ahora envíanos la lista de pacientes por correo. Adjunta el archivo (Excel, PDF o Word) y escribe el nombre del hospital en el asunto.</p>
+        <a id="mailto-link" href="mailto:info@redsolidariavenezuela.com"
+          style="display:inline-flex;align-items:center;gap:8px;background:#1A4F91;color:#fff;font-size:15px;font-weight:700;padding:13px 24px;border-radius:8px;text-decoration:none;margin-top:8px">
+          📧 Enviar archivo por correo →
+        </a>
+        <p style="font-size:12px;color:var(--muted);margin-top:12px">El correo se abre con el asunto y destinatario listos. Solo adjunta el archivo y envía.</p>
       </div>
     </div>
   </div>
 </section>
 
 <script is:inline>
-function onFile(input) {
-  const name = input.files[0]?.name || '';
-  document.getElementById('dz-fname').textContent = name ? '✓ ' + name : '';
-}
-const dz = document.getElementById('dropzone');
-if (dz) {
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e => {
-    e.preventDefault();
-    dz.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      document.getElementById('f-archivo').files = e.dataTransfer.files;
-      document.getElementById('dz-fname').textContent = '✓ ' + file.name;
-    }
-  });
-}
 function submitLista(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
   btn.textContent = 'Enviando...';
   btn.disabled = true;
+  const hospital = document.getElementById('f-hospital').value;
+  const reporte  = document.getElementById('f-reporte').value;
   const data = new FormData(document.getElementById('lista-form'));
-  fetch('https://api.web3forms.com/submit', {
+  fetch('https://formspree.io/f/xkolrddo', {
     method: 'POST',
-    body: data
+    body: data,
+    headers: { 'Accept': 'application/json' }
   })
   .then(res => res.json())
   .then(json => {
-    if (json.success) {
+    if (json.ok || json.next) {
+      const subject = encodeURIComponent('Lista pacientes — ' + hospital + (reporte ? ' · ' + reporte : ''));
+      const body    = encodeURIComponent('Hola, adjunto la lista de pacientes del ' + hospital + '.\n\n(Adjunta aquí tu archivo Excel, PDF o Word)');
+      document.getElementById('mailto-link').href =
+        'mailto:info@redsolidariavenezuela.com?subject=' + subject + '&body=' + body;
       document.getElementById('lista-form').style.display = 'none';
       document.getElementById('upload-ok').style.display = 'block';
     } else {
