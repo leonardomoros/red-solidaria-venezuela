@@ -19,12 +19,12 @@
         <div class="form-row">
           <div class="form-group full">
             <label class="f-label" for="f-hospital">Centro de salud <span class="req">*</span></label>
-            <input type="text" id="f-hospital" class="f-input"
+            <input type="text" id="f-hospital" name="hospital" class="f-input"
               placeholder="Ej: Hospital Vargas, Clínica El Ávila, Cruz Roja Táchira..." required/>
           </div>
           <div class="form-group">
             <label class="f-label" for="f-reporte">Tipo de reporte</label>
-            <select id="f-reporte" class="f-select">
+            <select id="f-reporte" name="tipo_reporte" class="f-select">
               <option value="">Selecciona...</option>
               <option value="pacientes-hospitalizados">Pacientes hospitalizados</option>
               <option value="pacientes-fallecidos">Pacientes fallecidos</option>
@@ -35,14 +35,14 @@
           </div>
           <div class="form-group">
             <label class="f-label" for="f-contacto">Tu contacto (para confirmar)</label>
-            <input type="text" id="f-contacto" class="f-input" placeholder="Email o teléfono"/>
+            <input type="text" id="f-contacto" name="contacto" class="f-input" placeholder="Email o teléfono"/>
           </div>
         </div>
 
         <div class="form-group" style="margin-bottom:18px">
           <label class="f-label">Adjunta tu lista <span class="req">*</span></label>
           <div class="dropzone" id="dropzone">
-            <input type="file" id="f-archivo"
+            <input type="file" id="f-archivo" name="archivo"
               accept=".xlsx,.xls,.csv,.pdf,.docx,.jpg,.jpeg,.png,.txt,.ods,.heic,.webp"
               required onchange="onFile(this)"/>
             <div class="dz-icon">📎</div>
@@ -115,16 +115,24 @@ function submitLista(e) {
   const btn = document.getElementById('submit-btn');
   btn.textContent = 'Enviando...';
   btn.disabled = true;
-  const hospital = document.getElementById('f-hospital').value;
-  const reporte  = document.getElementById('f-reporte').value;
-  const contacto = document.getElementById('f-contacto').value;
-  const subject  = encodeURIComponent('Lista pacientes — ' + hospital);
-  const body     = encodeURIComponent('Hospital/Centro: ' + hospital + '\nReporte: ' + reporte + '\nContacto: ' + contacto + '\n\n(Adjuntar archivo)');
-  setTimeout(() => {
-    window.location.href = 'mailto:info@redsolidariavenezuela.com?subject=' + subject + '&body=' + body;
-    document.getElementById('lista-form').style.display = 'none';
-    document.getElementById('upload-ok').style.display = 'block';
+  const formData = new FormData(document.getElementById('lista-form'));
+  fetch('https://formspree.io/f/xkolrddo', {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(res => {
+    if (res.ok) {
+      document.getElementById('lista-form').style.display = 'none';
+      document.getElementById('upload-ok').style.display = 'block';
+    } else {
+      btn.textContent = 'Error al enviar. Intenta de nuevo.';
+      btn.disabled = false;
+    }
+  })
+  .catch(() => {
+    btn.textContent = 'Error de conexión. Intenta de nuevo.';
     btn.disabled = false;
-  }, 600);
+  });
 }
 </script>
