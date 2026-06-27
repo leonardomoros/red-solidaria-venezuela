@@ -14,22 +14,38 @@ const {
 const canonical = 'https://www.redsolidariavenezuela.com';
 const ogImage = `${canonical}/og-image.png`;
 
-const structuredData = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Red Solidaria Venezuela",
-  "url": canonical,
-  "description": description,
-  "inLanguage": "es",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": `${canonical}/#hospitales?q={search_term_string}`
+const structuredData = JSON.stringify([
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Red Solidaria Venezuela",
+    "url": canonical,
+    "description": description,
+    "inLanguage": "es",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${canonical}/#hospitales?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Red Solidaria Venezuela",
+    "url": canonical,
+    "logo": `${canonical}/favicon.svg`,
+    "description": description,
+    "email": "info@redsolidariavenezuela.com",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Venezuela"
     },
-    "query-input": "required name=search_term_string"
+    "knowsAbout": ["Terremoto Venezuela 2026", "Ayuda humanitaria", "Pacientes hospitalizados", "Centros de acopio"]
   }
-});
+]);
 ---
 <!DOCTYPE html>
 <html lang="es">
