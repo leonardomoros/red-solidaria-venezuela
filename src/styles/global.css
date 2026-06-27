@@ -20,16 +20,20 @@ img{max-width:100%}
 .alert a{color:#FFD7D4;text-decoration:underline}
 
 /* HEADER */
-header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:100}
-.logo{display:flex;align-items:center;gap:10px}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .pulse{width:9px;height:9px;border-radius:50%;background:var(--red);animation:pulse 1.8s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
 .logo-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700}
 .logo-name span{color:var(--red)}
 nav{display:flex;gap:5px;flex-wrap:wrap}
-nav a{font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid var(--border);color:var(--muted);transition:all .15s}
+nav a{font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid var(--border);color:var(--muted);transition:all .15s;white-space:nowrap}
 nav a:hover,nav a.active{background:var(--text);color:#fff;border-color:var(--text)}
-@media(max-width:680px){nav{display:none}}
+@media(max-width:680px){
+  header{flex-direction:column;align-items:stretch;padding:10px 16px;gap:10px}
+  nav{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+  nav::-webkit-scrollbar{display:none}
+}
 
 /* HERO */
 .hero{background:var(--text);color:#fff;padding:48px 24px 44px;text-align:center}
