@@ -161,6 +161,19 @@ section+section{border-top:1px solid var(--border)}
 .flex-between{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px}
 @media(max-width:600px){.flex-between{flex-direction:column}.flex-between .btn-blue{display:none}}
 
+/* STATS CHIPS */
+.stats-hero-wrap{display:flex;gap:12px;flex-shrink:0}
+.stat-chip{background:#fff;border:1.5px solid #E2E8F0;border-radius:12px;padding:10px 20px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.stat-val{font-size:28px;font-weight:800;color:#1A4F91;line-height:1}
+.stat-label{font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+@media(max-width:640px){
+  .stats-hero-wrap{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:8px}
+  .stat-val{font-size:22px}
+  .stat-chip-date{grid-column:1/3;display:flex;align-items:center;gap:12px;text-align:left;padding:10px 16px}
+  .stat-chip-date .stat-val{font-size:14px;font-weight:700;white-space:nowrap;flex:1}
+  .stat-chip-date .stat-label{margin-top:0;white-space:nowrap}
+}
+
 /* BUSCADOR / CRUCE */
 .search-notice{background:var(--blue-bg);border:1px solid #C5D9F0;border-radius:var(--r);padding:13px 18px;font-size:13px;color:var(--blue);margin-bottom:18px;display:flex;gap:10px;align-items:flex-start}
 .search-notice a{font-weight:700;color:var(--red)}
