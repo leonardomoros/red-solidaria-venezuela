@@ -115,10 +115,18 @@ function submitLista(e) {
   const btn = document.getElementById('submit-btn');
   btn.textContent = 'Enviando...';
   btn.disabled = true;
-  const formData = new FormData(document.getElementById('lista-form'));
+  const hospital = document.getElementById('f-hospital').value;
+  const reporte  = document.getElementById('f-reporte').value;
+  const contacto = document.getElementById('f-contacto').value;
+  const archivo  = document.getElementById('f-archivo').files[0];
+  const data = new FormData();
+  data.append('hospital', hospital);
+  data.append('tipo_reporte', reporte);
+  data.append('contacto', contacto);
+  if (archivo) data.append('archivo', archivo);
   fetch('https://formspree.io/f/xkolrddo', {
     method: 'POST',
-    body: formData,
+    body: data,
     headers: { 'Accept': 'application/json' }
   })
   .then(res => {
@@ -126,12 +134,14 @@ function submitLista(e) {
       document.getElementById('lista-form').style.display = 'none';
       document.getElementById('upload-ok').style.display = 'block';
     } else {
-      btn.textContent = 'Error al enviar. Intenta de nuevo.';
+      res.json().then(d => console.error('Formspree error:', d));
+      btn.textContent = '⚠️ Error al enviar. Intenta de nuevo.';
       btn.disabled = false;
     }
   })
-  .catch(() => {
-    btn.textContent = 'Error de conexión. Intenta de nuevo.';
+  .catch(err => {
+    console.error(err);
+    btn.textContent = '⚠️ Error de conexión. Intenta de nuevo.';
     btn.disabled = false;
   });
 }
