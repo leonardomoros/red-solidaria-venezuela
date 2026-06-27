@@ -6,10 +6,10 @@
     <div class="flex-between">
       <div>
         <h2 class="s-title">Personas en centros de salud</h2>
-        <p class="s-sub" id="pacientes-stats">Cargando datos actualizados...</p>
       </div>
-      <a href="#subir-lista" class="btn-blue" style="flex-shrink:0">📤 Subir nueva lista →</a>
+      <div id="pacientes-stats-hero" style="display:flex;gap:12px;flex-shrink:0"></div>
     </div>
+    <p class="s-sub" id="pacientes-stats" style="display:none">Cargando datos actualizados...</p>
 
     <div class="cruce-box">
       <h4>🔍 ¿Buscas a un familiar? Ingresa su nombre o cédula</h4>
@@ -275,12 +275,18 @@ async function loadPatients() {
       };
     });
     buildAccordion(PACIENTES);
-    const statsEl = document.getElementById('pacientes-stats');
-    if (statsEl) {
-      const total = PACIENTES.length;
-      const centers = new Set(PACIENTES.map(function(p) { return p.h; })).size;
-      const now = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
-      statsEl.textContent = total + ' registros · ' + centers + ' centros · Actualizado ' + now;
+    const total = PACIENTES.length;
+    const centers = new Set(PACIENTES.map(function(p) { return p.h; })).size;
+    const now = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
+    const heroEl = document.getElementById('pacientes-stats-hero');
+    if (heroEl) {
+      const chip = function(val, label) {
+        return '<div style="background:#fff;border:1.5px solid #E2E8F0;border-radius:12px;padding:10px 20px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06)">'
+          + '<div style="font-size:28px;font-weight:800;color:#1A4F91;line-height:1">' + val + '</div>'
+          + '<div style="font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.05em;margin-top:3px">' + label + '</div>'
+          + '</div>';
+      };
+      heroEl.innerHTML = chip(total.toLocaleString('es-VE'), 'registros') + chip(centers, 'centros') + chip(now, 'actualizado');
     }
   } catch (err) {
     console.error('[Buscador]', err);
