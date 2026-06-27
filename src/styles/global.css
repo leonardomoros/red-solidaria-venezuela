@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -164,7 +176,7 @@ section+section{border-top:1px solid var(--border)}
 /* ACCORDION HOSPITALES */
 .hosp-accordion{display:flex;flex-direction:column;gap:8px}
 .hosp-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.hosp-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;user-select:none;gap:12px;transition:background .15s}
+.hosp-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;user-select:none;gap:12px;transition:background .15s;width:100%;text-align:left;background:none;border:none;font-size:inherit;font-family:inherit;color:inherit}
 .hosp-header:hover{background:var(--bg)}
 .hosp-header.open{background:var(--text);color:#fff}
 .hosp-header-left{display:flex;align-items:center;gap:12px;flex:1}

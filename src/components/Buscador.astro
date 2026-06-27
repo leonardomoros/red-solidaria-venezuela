@@ -12,17 +12,19 @@
     <p class="s-sub" id="pacientes-stats" style="display:none">Cargando datos actualizados...</p>
 
     <div class="cruce-box">
-      <h4>🔍 ¿Buscas a un familiar? Ingresa su nombre o cédula</h4>
+      <h3>¿Buscas a un familiar? Ingresa su nombre o cédula</h3>
       <div class="cruce-form">
+        <label for="cruce-nombre" class="sr-only">Nombre y apellido</label>
         <input type="text" class="cruce-input" id="cruce-nombre"
           placeholder="Nombre y apellido..."
           autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <label for="cruce-cedula" class="sr-only">Número de cédula</label>
         <input type="text" class="cruce-input" id="cruce-cedula"
           placeholder="Número de cédula..."
           autocomplete="off"/>
-        <button class="btn-amber" onclick="buscarFamiliar()">🔍 Buscar familiar</button>
+        <button class="btn-amber" onclick="buscarFamiliar()">Buscar familiar</button>
       </div>
-      <div class="cruce-results" id="cruce-results" style="display:none"></div>
+      <div class="cruce-results" id="cruce-results" style="display:none" aria-live="polite" aria-atomic="true"></div>
     </div>
 
     <div class="search-notice">
@@ -30,12 +32,13 @@
       <span>Lista ciudadana en construcción. Si no encuentras a alguien, revisa <a href="https://desaparecidosterremotovenezuela.com/" target="_blank" rel="noopener">desaparecidosterremotovenezuela.com</a> o llama directamente al hospital.</span>
     </div>
 
-    <div class="s-stats" id="global-stats"></div>
-    <div id="global-results" class="tbl-wrap" style="display:none;margin-bottom:20px">
+    <div class="s-stats" id="global-stats" aria-live="polite"></div>
+    <div id="global-results" class="tbl-wrap" style="display:none;margin-bottom:20px" role="region" aria-label="Resultados de búsqueda">
       <table class="tbl">
+        <caption class="sr-only">Lista de pacientes encontrados</caption>
         <thead>
           <tr>
-            <th>Nombre</th><th>Hospital</th><th>Edad</th><th>Cédula</th><th>Dirección</th>
+            <th scope="col">Nombre</th><th scope="col">Hospital</th><th scope="col">Edad</th><th scope="col">Cédula</th><th scope="col">Dirección</th>
           </tr>
         </thead>
         <tbody id="global-tbody"></tbody>
@@ -85,6 +88,7 @@ function toggleHosp(hdr, id) {
   const open = !body.classList.contains('open');
   body.classList.toggle('open', open);
   hdr.classList.toggle('open', open);
+  hdr.setAttribute('aria-expanded', open ? 'true' : 'false');
   if (open && !hdr.dataset.loaded) {
     hdr.dataset.loaded = '1';
     limitRows(id, 20);
@@ -225,16 +229,17 @@ function buildAccordion(patients) {
         + '</li>';
     }).join('');
     return '<div class="hosp-panel" style="' + panelStyle + '">'
-      + '<div class="hosp-header" onclick="toggleHosp(this,\'' + id + '\')" style="' + headerBg + '">'
+      + '<button class="hosp-header" onclick="toggleHosp(this,\'' + id + '\')" style="' + headerBg + '" aria-expanded="false" aria-controls="' + id + '" type="button">'
       + '<div class="hosp-header-left">'
-      + '<span class="hosp-name">' + icon + ' ' + esc(hosp) + '</span>'
+      + '<span class="hosp-name" aria-hidden="true">' + icon + '</span> <span class="hosp-name">' + esc(hosp) + '</span>'
       + '<span class="hosp-badge" style="' + badgeStyle + '">' + pts.length + ' ' + label + '</span>'
       + '</div>'
-      + '<span class="hosp-chevron">▼</span>'
-      + '</div>'
+      + '<span class="hosp-chevron" aria-hidden="true">▼</span>'
+      + '</button>'
       + '<div class="hosp-body" id="' + id + '" style="' + bodyBorder + '">'
       + '<div class="hosp-search-row" style="' + searchBg + '">'
-      + '<input class="hosp-search" type="search" placeholder="Buscar en este ' + (isRefugio ? 'refugio' : 'hospital') + '..." oninput="filterHosp(this,\'' + id + '\')" autocomplete="off" autocorrect="off" spellcheck="false"/>'
+      + '<label class="sr-only" for="search_' + id + '">Buscar en ' + esc(hosp) + '</label>'
+      + '<input class="hosp-search" type="search" id="search_' + id + '" aria-label="Buscar en ' + esc(hosp) + '" placeholder="Buscar en este ' + (isRefugio ? 'refugio' : 'hospital') + '..." oninput="filterHosp(this,\'' + id + '\')" autocomplete="off" autocorrect="off" spellcheck="false"/>'
       + '</div>'
       + warning
       + '<ul class="patient-list" id="list_' + id + '">' + rowsHtml + '</ul>'
