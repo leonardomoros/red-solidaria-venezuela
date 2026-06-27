@@ -43,7 +43,7 @@ nav a:hover,nav a.active{background:var(--text);color:#fff;border-color:var(--te
 .fn-card{border-radius:10px;padding:18px 20px;cursor:pointer;text-decoration:none;display:flex;flex-direction:column;gap:6px;transition:transform .15s,box-shadow .15s;border:2px solid transparent}
 .fn-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.18)}
 .fn-card .fn-num{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff}
-.fn-card .fn-icon{font-size:26px;margin-bottom:2px}
+.fn-card .fn-icon{font-size:40px;margin-bottom:6px}
 .fn-card h3{font-size:15px;font-weight:700;line-height:1.2}
 .fn-card p{font-size:12px;color:#fff;line-height:1.4}
 .fn-1{background:#C0392B;color:#fff}.fn-2{background:#1A4F91;color:#fff}
