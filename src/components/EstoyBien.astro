@@ -214,7 +214,8 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
     fetch(url)
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        var rows = (data.values || []).slice(1);
+        var rows = data.values || [];
+        if (rows.length && rows[0][0] === 'timestamp') rows = rows.slice(1);
         EB_DATA = rows
           .filter(function(r) { return r[14] === 'aprobado'; })
           .map(function(r) {
