@@ -46,12 +46,13 @@ const sheetsKey = import.meta.env.PUBLIC_SHEETS_KEY ?? '';
       </table>
     </div>
 
-    <div class="hosp-accordion" id="hosp-accordion">
-      <div style="padding:48px;text-align:center;color:var(--muted)">
-        <div style="font-size:36px;margin-bottom:12px">⏳</div>
-        <div style="font-size:14px">Cargando lista de pacientes desde Google Sheets...</div>
-      </div>
+    <div id="hosp-accordion-toggle" style="display:none;text-align:center;margin:24px 0">
+      <button onclick="mostrarAccordion()" class="btn-ver-lista">
+        📋 Ver lista completa por hospital
+      </button>
     </div>
+
+    <div class="hosp-accordion" id="hosp-accordion" style="display:none"></div>
   </div>
 </section>
 
@@ -268,6 +269,15 @@ function buildAccordion(patients) {
   }).join('');
 }
 
+// ─── MOSTRAR ACCORDION ───────────────────────────────────
+function mostrarAccordion() {
+  const acc = document.getElementById('hosp-accordion');
+  const btn = document.getElementById('hosp-accordion-toggle');
+  acc.style.display = '';
+  btn.style.display = 'none';
+  acc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 // ─── LOAD DATA ───────────────────────────────────────────
 async function loadPatients() {
   const accordion = document.getElementById('hosp-accordion');
@@ -297,6 +307,7 @@ async function loadPatients() {
       };
     });
     buildAccordion(PACIENTES);
+    document.getElementById('hosp-accordion-toggle').style.display = 'block';
     const total = PACIENTES.length;
     const centers = new Set(PACIENTES.map(function(p) { return p.h; })).size;
     const nowDate = new Date();
