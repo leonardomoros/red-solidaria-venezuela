@@ -96,8 +96,8 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
             </select>
           </div>
           <div class="eb-field">
-            <label for="eb-ciudad">Ciudad / Municipio <span class="eb-req">*</span></label>
-            <input type="text" id="eb-ciudad" name="ciudad" class="eb-input" placeholder="Ej. Caracas" required/>
+            <label for="eb-ciudad">Ciudad / Municipio</label>
+            <input type="text" id="eb-ciudad" name="ciudad" class="eb-input" placeholder="Escribe tu ciudad..."/>
           </div>
           <div class="eb-field eb-field-full">
             <label for="eb-tipo-lugar">¿Dónde te encuentras? <span class="eb-req">*</span></label>
@@ -314,7 +314,7 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
     var data = {};
     new FormData(form).forEach(function(v, k) { data[k] = v; });
     if (!data.nombre || !data.cedula || !data.edad || !data.sexo || !data.estado_vzla
-        || !data.ciudad || !data.tipo_lugar || !data.direccion || !data.status || !data.mensaje) {
+        || !data.tipo_lugar || !data.direccion || !data.status || !data.mensaje) {
       msg.innerHTML = '<div class="eb-msg-error">Por favor completa todos los campos obligatorios.</div>';
       return;
     }
