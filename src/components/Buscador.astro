@@ -170,20 +170,36 @@ function buscarFamiliar() {
     if (mN || mC) matches.push({ ...p, mN, mC });
   }
   if (!matches.length) {
-    box.innerHTML = '<div class="cruce-none">Sin coincidencias en listas actuales. Llama al hospital o '
-      + '<a href="https://desaparecidosterremotovenezuela.com/" target="_blank" style="color:var(--red);font-weight:700">repórtalo aquí →</a></div>';
+    box.innerHTML = '<div class="cruce-notfound">'
+      + '<div class="cruce-notfound-icon">🔍</div>'
+      + '<div class="cruce-notfound-title">No encontramos coincidencias</div>'
+      + '<div class="cruce-notfound-sub">Puede que aún no esté en la lista o esté registrado con otro nombre. Llama directamente al hospital o repórtalo como desaparecido.</div>'
+      + '<a href="https://desaparecidosterremotovenezuela.com/" target="_blank" rel="noopener" class="cruce-notfound-btn">Reportar como desaparecido →</a>'
+      + '</div>';
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     return;
   }
-  const rows = matches.map(p =>
-    '<li><strong>' + esc(p.nm) + '</strong>'
-    + (p.mC ? '<span class="cruce-match-badge match-cedula">Cédula</span>' : '')
-    + (p.mN && !p.mC ? '<span class="cruce-match-badge match-nombre">Nombre</span>' : '')
-    + '  ' + esc(p.h) + (p.e ? ' · ' + esc(p.e) + ' años' : '') + '</li>'
+  const cards = matches.map(p =>
+    '<div class="cruce-card">'
+    + '<div class="cruce-card-top">'
+    + (p.mC ? '<span class="cruce-match-badge match-cedula">✓ Coincidencia por cédula</span>' : '<span class="cruce-match-badge match-nombre">✓ Coincidencia por nombre</span>')
+    + '</div>'
+    + '<div class="cruce-card-name">' + esc(p.nm) + '</div>'
+    + '<div class="cruce-card-hosp">🏥 ' + esc(p.h) + '</div>'
+    + '<div class="cruce-card-meta">'
+    + (p.e ? '<span>' + esc(p.e) + ' años</span>' : '')
+    + (p.c ? '<span>CI: ' + esc(p.c) + '</span>' : '')
+    + (p.d ? '<span>' + esc(p.d) + '</span>' : '')
+    + '</div>'
+    + '</div>'
   ).join('');
-  box.innerHTML = '<div class="cruce-alert"><h5>'
-    + matches.length + ' coincidencia' + (matches.length > 1 ? 's' : '') + ' encontrada' + (matches.length > 1 ? 's' : '')
-    + '</h5><ul>' + rows + '</ul>'
-    + '<p style="font-size:12px;color:var(--muted);margin-top:8px">Verifica llamando al hospital.</p></div>';
+  box.innerHTML = '<div class="cruce-found-header">'
+    + '<span class="cruce-found-icon">✅</span>'
+    + '<div><div class="cruce-found-count">' + matches.length + ' coincidencia' + (matches.length > 1 ? 's' : '') + ' encontrada' + (matches.length > 1 ? 's' : '') + '</div>'
+    + '<div class="cruce-found-sub">Verifica llamando directamente al hospital</div></div>'
+    + '</div>'
+    + cards;
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 document.getElementById('cruce-nombre').addEventListener('keydown', e => { if (e.key === 'Enter') buscarFamiliar(); });
 document.getElementById('cruce-cedula').addEventListener('keydown', e => { if (e.key === 'Enter') buscarFamiliar(); });
