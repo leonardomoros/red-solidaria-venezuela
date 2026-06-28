@@ -7,8 +7,8 @@ interface Props {
 }
 
 const {
-  title = 'Terremoto Venezuela 2026 — Plataforma de Ayuda y Emergencia',
-  description = 'Plataforma de ayuda comunitaria tras el terremoto en Venezuela 2026. Busca personas hospitalizadas, reporta desaparecidos, localiza centros de acopio y dona sangre.'
+  title = 'Terremoto Venezuela 2026 — Busca familiares, refugios y ayuda de emergencia',
+  description = 'Busca a tu familiar en hospitales tras el terremoto Venezuela 2026. Avisa que estás bien, reporta desaparecidos, encuentra refugios en La Guaira y dona sangre. Información actualizada en tiempo real.'
 } = Astro.props;
 
 const canonical = 'https://www.redsolidariavenezuela.com';
@@ -39,11 +39,58 @@ const structuredData = JSON.stringify([
     "logo": `${canonical}/favicon.svg`,
     "description": description,
     "email": "info@redsolidariavenezuela.com",
-    "areaServed": {
-      "@type": "Country",
-      "name": "Venezuela"
-    },
-    "knowsAbout": ["Terremoto Venezuela 2026", "Ayuda humanitaria", "Pacientes hospitalizados", "Centros de acopio"]
+    "areaServed": { "@type": "Country", "name": "Venezuela" },
+    "knowsAbout": [
+      "Terremoto Venezuela 2026", "Ayuda humanitaria", "Pacientes hospitalizados",
+      "Centros de acopio", "Refugios La Guaira", "Desaparecidos Venezuela",
+      "Donación de sangre Venezuela"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cómo buscar a un familiar en hospitales tras el terremoto de Venezuela 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Entra a redsolidariavenezuela.com y usa el buscador 'Personas en centros de salud'. Escribe el nombre o cédula de tu familiar para encontrarlo en los registros de hospitales y refugios actualizados en tiempo real."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Dónde están los refugios habilitados en La Guaira tras el terremoto?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La Vicepresidencia Social habilitó 9 refugios en La Guaira: Centro de Adiestramiento Naval, UEN Juan Germán Roscio, Liceo Armando Reverón, Complejo Educativo República de Panamá, Liceo Lorenzo González, UEE La Guaira, UENB 10 de Marzo, CEIS Manuelita Saenz y Universidad Marítima del Caribe. Hay refugios especiales para adultos mayores y niños sin amparo familiar."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo avisar a mi familia que estoy bien después del terremoto?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "En redsolidariavenezuela.com entra a la sección 'Estoy Bien' y haz click en 'Avisar que estoy bien'. Publica tu nombre, dónde estás y un mensaje para tu familia. Tu publicación aparece en el carrusel en vivo para que tus seres queridos te encuentren."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo reportar a una persona desaparecida por el terremoto de Venezuela?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "En redsolidariavenezuela.com ve a la sección 'Reportar a alguien' y haz click en 'Reportar a alguien'. Ingresa los datos de la persona que buscas: nombre, edad, dónde fue visto por última vez y tu contacto. El reporte es gratuito y aparece en la plataforma para que otros lo vean."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Dónde donar sangre en Venezuela tras el terremoto 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "En redsolidariavenezuela.com consulta la sección 'Donar Sangre' con los bancos y jornadas de donación activas en Venezuela. Puedes ir al Hemocentro Chacao, Hospital Domingo Luciani y Hospital Pérez Carreño."
+        }
+      }
+    ]
   }
 ]);
 ---
@@ -74,7 +121,7 @@ const structuredData = JSON.stringify([
   <!-- Primary -->
   <title>{title}</title>
   <meta name="description" content={description}/>
-  <meta name="keywords" content="terremoto venezuela 2026, pacientes hospitalizados venezuela, buscar familiar terremoto, sismo venezuela, centros de acopio venezuela, donar sangre venezuela, desaparecidos terremoto venezuela"/>
+  <meta name="keywords" content="terremoto venezuela 2026, sismo venezuela 2026, buscar familiar terremoto venezuela, personas hospitalizadas venezuela terremoto, refugios la guaira terremoto, estoy bien terremoto venezuela, reportar desaparecido venezuela, buscar persona hospital venezuela, centros de acopio venezuela, donar sangre venezuela, desaparecidos terremoto venezuela, la guaira terremoto, ayuda humanitaria venezuela, buscar paciente hospital venezuela"/>
   <meta name="author" content="Red Solidaria Venezuela"/>
   <link rel="canonical" href={canonical}/>
 
