@@ -1,0 +1,313 @@
+---
+const sheetsKey = import.meta.env.PUBLIC_SHEETS_KEY ?? '';
+const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
+---
+<section id="reportar" data-sk={sheetsKey} data-wh={webhookUrl}>
+  <div class="container">
+
+    <div class="rp-hero">
+      <div class="rp-hero-text">
+        <div class="rp-label">🔴 Personas desaparecidas · Sismo Venezuela 2026</div>
+        <h2 class="s-title">¿Buscas a alguien?</h2>
+        <p class="s-sub">Si no logras comunicarte con un familiar o conocido tras el terremoto, repórtalo aquí. Si ya lo encontraste, avísanos — para que su nombre dé tranquilidad, no angustia.</p>
+      </div>
+      <button class="rp-cta-btn" onclick="abrirModalRP()">
+        + &nbsp; Reportar a alguien
+      </button>
+      <p class="rp-cta-note">Incluye cualquier información que tengas. Cada dato ayuda a reconectar familias.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="rp-stats">
+      <div class="rp-stat">
+        <div class="rp-stat-num" id="rp-total">—</div>
+        <div class="rp-stat-lbl">CANTIDAD DE REPORTES</div>
+      </div>
+      <div class="rp-stat rp-stat-warn">
+        <div class="rp-stat-num" id="rp-sin-contacto">—</div>
+        <div class="rp-stat-lbl">AÚN SIN CONTACTO</div>
+      </div>
+      <div class="rp-stat rp-stat-ok">
+        <div class="rp-stat-num" id="rp-localizados">—</div>
+        <div class="rp-stat-lbl">LOCALIZADOS</div>
+      </div>
+    </div>
+
+    <!-- BUSCADOR -->
+    <div class="eb-search-box">
+      <h3 class="eb-box-title">🔍 Buscar en los reportes</h3>
+      <div class="eb-search-form">
+        <label for="rp-search" class="sr-only">Buscar por nombre o cédula</label>
+        <input type="text" id="rp-search" class="cruce-input" placeholder="Nombre de la persona o cédula..." autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <button class="btn-amber" onclick="buscarRP()">Buscar</button>
+      </div>
+      <div id="rp-search-res" aria-live="polite"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL -->
+<div id="rp-modal-overlay" class="eb-modal-overlay" onclick="cerrarModalRP(event)" aria-modal="true" role="dialog" aria-label="Reportar a alguien" hidden>
+  <div class="eb-modal">
+    <div class="eb-modal-header">
+      <div>
+        <div class="eb-modal-title">📢 Reportar a alguien</div>
+        <div class="eb-modal-sub">Completa los datos de la persona que buscas.</div>
+      </div>
+      <button class="eb-modal-close" onclick="cerrarModalRP()" aria-label="Cerrar">&times;</button>
+    </div>
+
+    <div class="eb-modal-body">
+      <form id="rp-form" onsubmit="submitRP(event)" novalidate>
+
+        <div class="rp-section-title">Sobre la persona que buscas</div>
+
+        <div class="eb-form-grid">
+          <div class="eb-field">
+            <label for="rp-nombre">Nombre completo <span class="eb-req">*</span></label>
+            <input type="text" id="rp-nombre" name="nombre_buscado" class="eb-input" placeholder="Ej. Carlos Pérez" required/>
+          </div>
+          <div class="eb-field">
+            <label for="rp-cedula">Cédula de identidad</label>
+            <input type="text" id="rp-cedula" name="cedula" class="eb-input" placeholder="Ej. V-12345678"/>
+          </div>
+          <div class="eb-field">
+            <label for="rp-edad">Edad aproximada <span class="eb-req">*</span></label>
+            <input type="number" id="rp-edad" name="edad" class="eb-input" placeholder="Ej. 42" min="1" max="120" required/>
+          </div>
+          <div class="eb-field">
+            <label for="rp-sexo">Sexo <span class="eb-req">*</span></label>
+            <select id="rp-sexo" name="sexo" class="eb-input" required>
+              <option value="">Seleccionar...</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Masculino">Masculino</option>
+            </select>
+          </div>
+          <div class="eb-field">
+            <label for="rp-estado-vzla">Estado <span class="eb-req">*</span></label>
+            <select id="rp-estado-vzla" name="estado_vzla" class="eb-input" required>
+              <option value="">Seleccionar...</option>
+              <option>Amazonas</option><option>Anzoátegui</option><option>Apure</option>
+              <option>Aragua</option><option>Barinas</option><option>Bolívar</option>
+              <option>Carabobo</option><option>Cojedes</option><option>Delta Amacuro</option>
+              <option>Distrito Capital</option><option>Falcón</option><option>Guárico</option>
+              <option>La Guaira</option><option>Lara</option><option>Mérida</option>
+              <option>Miranda</option><option>Monagas</option><option>Nueva Esparta</option>
+              <option>Portuguesa</option><option>Sucre</option><option>Táchira</option>
+              <option>Trujillo</option><option>Yaracuy</option><option>Zulia</option>
+            </select>
+          </div>
+          <div class="eb-field">
+            <label for="rp-ciudad">Ciudad / Municipio <span class="eb-req">*</span></label>
+            <input type="text" id="rp-ciudad" name="ciudad" class="eb-input" placeholder="Ej. La Guaira" required/>
+          </div>
+          <div class="eb-field eb-field-full">
+            <label for="rp-ultima-vez">Última vez visto/a — lugar <span class="eb-req">*</span></label>
+            <input type="text" id="rp-ultima-vez" name="ultima_vez" class="eb-input" placeholder="Ej. Edificio Costa Verde, Maiquetía, el 24 de junio" required/>
+          </div>
+          <div class="eb-field eb-field-full">
+            <label for="rp-descripcion">Descripción física / señas particulares</label>
+            <textarea id="rp-descripcion" name="descripcion" class="eb-input eb-textarea" placeholder="Ej. 1.70m, cabello negro, usa lentes, tenía camisa azul el día del sismo." maxlength="400"></textarea>
+          </div>
+        </div>
+
+        <div class="rp-section-title" style="margin-top:8px">Tu información</div>
+
+        <div class="eb-form-grid">
+          <div class="eb-field">
+            <label for="rp-tu-nombre">Tu nombre completo <span class="eb-req">*</span></label>
+            <input type="text" id="rp-tu-nombre" name="tu_nombre" class="eb-input" placeholder="Ej. Ana Gómez" required/>
+          </div>
+          <div class="eb-field">
+            <label for="rp-tu-telefono">Tu teléfono / WhatsApp <span class="eb-req">*</span></label>
+            <input type="tel" id="rp-tu-telefono" name="tu_telefono" class="eb-input" placeholder="Ej. 0414-1234567" required/>
+          </div>
+          <div class="eb-field eb-field-full">
+            <label for="rp-relacion">Tu relación con la persona <span class="eb-req">*</span></label>
+            <select id="rp-relacion" name="tu_relacion" class="eb-input" required>
+              <option value="">Seleccionar...</option>
+              <option value="Familiar directo">Familiar directo (hijo/a, padre, madre, hermano/a)</option>
+              <option value="Cónyuge / pareja">Cónyuge / pareja</option>
+              <option value="Familiar lejano">Familiar lejano (tío, primo, etc.)</option>
+              <option value="Amigo/a">Amigo/a</option>
+              <option value="Vecino/a">Vecino/a</option>
+              <option value="Compañero de trabajo">Compañero/a de trabajo</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="rp-form-msg" aria-live="polite"></div>
+
+        <button type="submit" class="rp-submit-btn" id="rp-submit">
+          Enviar reporte
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+(function () {
+  var SEC      = document.getElementById('reportar');
+  var SHEET_ID = '1FlFw-guJpiQED_EsR_YJyUhzANy_1HU84_loZqH4_CY';
+  var API_KEY  = SEC ? SEC.dataset.sk : '';
+  var WEBHOOK  = SEC ? SEC.dataset.wh : '';
+  var RANGE    = 'Reportar!A:N';
+  var RP_DATA  = [];
+
+  // ── MODAL ──────────────────────────────────────────────────
+  window.abrirModalRP = function() {
+    var o = document.getElementById('rp-modal-overlay');
+    o.hidden = false;
+    document.body.style.overflow = 'hidden';
+    o.querySelector('.eb-modal').scrollTop = 0;
+  };
+
+  window.cerrarModalRP = function(e) {
+    if (e && e.target !== document.getElementById('rp-modal-overlay')) return;
+    document.getElementById('rp-modal-overlay').hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var o = document.getElementById('rp-modal-overlay');
+      if (o && !o.hidden) { o.hidden = true; document.body.style.overflow = ''; }
+    }
+  });
+
+  // ── LOAD DATA ──────────────────────────────────────────────
+  function loadRP() {
+    if (!API_KEY) return;
+    var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/'
+      + encodeURIComponent(RANGE) + '?key=' + API_KEY;
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var rows = data.values || [];
+        if (rows.length && rows[0][0] === 'timestamp') rows = rows.slice(1);
+        var aprobados = rows.filter(function(r) { return r[13] === 'aprobado'; });
+        RP_DATA = aprobados.map(function(r) {
+          return {
+            ts: r[0]||'', nombre: r[1]||'', ced: r[2]||'', edad: r[3]||'',
+            sexo: r[4]||'', ultima: r[5]||'', estado: r[6]||'', ciudad: r[7]||'',
+            desc: r[8]||'', tu_nombre: r[9]||'', tu_tel: r[10]||'',
+            relacion: r[11]||'', estado_rp: r[12]||'sin_contacto'
+          };
+        }).reverse();
+
+        var total = aprobados.length;
+        var loc   = aprobados.filter(function(r) { return r[12] === 'localizado'; }).length;
+        var sinc  = total - loc;
+
+        document.getElementById('rp-total').textContent = total;
+        document.getElementById('rp-sin-contacto').textContent = sinc;
+        document.getElementById('rp-localizados').textContent = loc;
+      })
+      .catch(function() {});
+  }
+
+  // ── SEARCH ─────────────────────────────────────────────────
+  window.buscarRP = function() {
+    var q = document.getElementById('rp-search').value.trim().toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g,'');
+    var res = document.getElementById('rp-search-res');
+    if (!q || q.length < 2) { res.innerHTML = ''; return; }
+
+    var hits = RP_DATA.filter(function(p) {
+      return p.nombre.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').includes(q)
+        || p.ced.replace(/[^0-9]/g,'').includes(q.replace(/[^0-9]/g,''));
+    });
+
+    if (!hits.length) {
+      res.innerHTML = '<div class="cruce-notfound"><div class="cruce-notfound-icon">🔍</div>'
+        + '<div class="cruce-notfound-title">No encontramos ese reporte</div>'
+        + '<div class="cruce-notfound-sub">Puede que aún no haya sido registrado. <button class="rp-link-btn" onclick="abrirModalRP()">Reportarlo ahora →</button></div></div>';
+      return;
+    }
+
+    res.innerHTML = '<div class="cruce-found-header">'
+      + '<span class="cruce-found-icon">📋</span>'
+      + '<div><div class="cruce-found-count">' + hits.length + ' reporte' + (hits.length > 1 ? 's' : '') + ' encontrado' + (hits.length > 1 ? 's' : '') + '</div>'
+      + '<div class="cruce-found-sub">Contacta a quien lo reportó para más información</div></div></div>'
+      + hits.map(function(p) {
+        var badge = p.estado_rp === 'localizado'
+          ? '<span class="eb-tag eb-tag-bien">Localizado</span>'
+          : '<span class="eb-tag eb-tag-ayuda">Sin contacto</span>';
+        return '<div class="cruce-card">'
+          + '<div class="cruce-card-top">' + badge + '</div>'
+          + '<div class="cruce-card-name">' + esc(p.nombre) + '</div>'
+          + '<div class="cruce-card-hosp">📍 Visto por última vez: ' + esc(p.ultima) + '</div>'
+          + '<div class="cruce-card-hosp">📌 ' + esc(p.ciudad) + (p.estado ? ', ' + esc(p.estado) : '') + '</div>'
+          + (p.desc ? '<div class="eb-card-msg" style="margin-top:8px;font-size:13px;color:#475569">' + esc(p.desc) + '</div>' : '')
+          + '<div class="cruce-card-meta">'
+          + (p.edad ? '<span>' + esc(p.edad) + ' años</span>' : '')
+          + (p.sexo ? '<span>' + esc(p.sexo) + '</span>' : '')
+          + (p.relacion ? '<span>Reportado por: ' + esc(p.relacion) + '</span>' : '')
+          + '</div>'
+          + (p.tu_tel ? '<div style="margin-top:8px;font-size:12px;font-weight:700;color:#1E293B">📱 Contacto: ' + esc(p.tu_tel) + '</div>' : '')
+          + '</div>';
+      }).join('');
+    res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+
+  // ── FORM SUBMIT ────────────────────────────────────────────
+  window.submitRP = function(e) {
+    e.preventDefault();
+    var msg = document.getElementById('rp-form-msg');
+    var btn = document.getElementById('rp-submit');
+    if (!WEBHOOK) {
+      msg.innerHTML = '<div class="eb-msg-error">Servicio no configurado aún.</div>';
+      return;
+    }
+    var form = document.getElementById('rp-form');
+    var data = { tipo: 'reportar' };
+    new FormData(form).forEach(function(v, k) { data[k] = v; });
+    if (!data.nombre_buscado || !data.edad || !data.sexo || !data.estado_vzla
+        || !data.ciudad || !data.ultima_vez || !data.tu_nombre || !data.tu_telefono || !data.tu_relacion) {
+      msg.innerHTML = '<div class="eb-msg-error">Por favor completa todos los campos obligatorios.</div>';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    fetch(WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (res.ok) {
+        form.reset();
+        msg.innerHTML = '<div class="eb-msg-ok">✅ Reporte enviado. Lo revisaremos y publicaremos en breve. Gracias por reportar.</div>';
+        setTimeout(function() {
+          document.getElementById('rp-modal-overlay').hidden = true;
+          document.body.style.overflow = '';
+          msg.innerHTML = '';
+        }, 3500);
+      } else { throw new Error(); }
+    })
+    .catch(function() {
+      msg.innerHTML = '<div class="eb-msg-error">Hubo un error. Intenta de nuevo.</div>';
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.textContent = 'Enviar reporte';
+    });
+  };
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  document.getElementById('rp-search').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') buscarRP();
+  });
+
+  loadRP();
+  setInterval(loadRP, 30000);
+})();
+</script>

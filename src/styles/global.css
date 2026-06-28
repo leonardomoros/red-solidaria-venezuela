@@ -401,6 +401,26 @@ section+section{border-top:1px solid var(--border)}
 .btn-purple{background:#fff;color:#7B3F9E;font-weight:700;padding:11px 20px;border-radius:8px;font-size:14px;white-space:nowrap;text-decoration:none;display:inline-block}
 .btn-purple:hover{background:#F3E8FF}
 
+/* REPORTAR A ALGUIEN */
+#reportar{background:#FFF5F5;border-top:2px solid #FECACA}
+.rp-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#DC2626;margin-bottom:10px}
+.rp-hero{display:flex;flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:28px}
+.rp-cta-btn{background:#DC2626;color:#fff;font-size:18px;font-weight:800;padding:16px 32px;border-radius:12px;border:none;cursor:pointer;transition:background .15s;align-self:flex-start}
+.rp-cta-btn:hover{background:#B91C1C}
+.rp-cta-note{font-size:12px;color:#991B1B;margin-top:-8px}
+.rp-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.rp-stat{background:#fff;border:1.5px solid #FECACA;border-radius:12px;padding:14px 22px;text-align:center;min-width:120px;flex:1}
+.rp-stat-num{font-size:28px;font-weight:900;color:#1E293B;line-height:1}
+.rp-stat-lbl{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-top:4px}
+.rp-stat-warn{border-color:#FCA5A5}.rp-stat-warn .rp-stat-num{color:#DC2626}
+.rp-stat-ok{border-color:#BBF7D0}.rp-stat-ok .rp-stat-num{color:#16A34A}
+.rp-section-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#64748B;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #E2E8F0}
+.rp-submit-btn{width:100%;padding:14px;background:#DC2626;color:#fff;font-size:15px;font-weight:800;border-radius:10px;border:none;cursor:pointer;margin-top:12px;transition:background .15s}
+.rp-submit-btn:hover{background:#B91C1C}
+.rp-submit-btn:disabled{opacity:.6;cursor:not-allowed}
+.rp-link-btn{background:none;border:none;color:#DC2626;font-weight:700;cursor:pointer;font-size:inherit;text-decoration:underline;padding:0}
+@media(max-width:640px){.rp-stats{gap:8px}.rp-stat{min-width:calc(50% - 8px);padding:12px 16px}.rp-stat-num{font-size:24px}}
+
 /* DESAPARECIDOS */
 .missing-box{background:var(--text);color:#fff;border-radius:var(--r);padding:36px;display:flex;align-items:center;gap:36px;flex-wrap:wrap}
 .missing-box h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;margin-bottom:8px}
