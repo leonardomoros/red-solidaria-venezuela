@@ -394,6 +394,13 @@ section+section{border-top:1px solid var(--border)}
 .psico-btn-struct:hover{background:#047857}
 @media(max-width:640px){.psico-grid-2col{grid-template-columns:1fr}}
 .psico-card{background:var(--surface);border:1px solid var(--border);border-left:4px solid #7B3F9E;border-radius:var(--r);padding:18px 20px}
+.psico-card-struct{border-left-color:#059669}
+.psico-col-header{border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:14px}
+.psico-col-eye{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#7B3F9E;margin-bottom:6px}
+.psico-col-eye-struct{color:#059669}
+.psico-col-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.psico-col-sub{font-size:13px;color:var(--muted);line-height:1.5;margin:0}
+.psico-nombre{font-size:14px;font-weight:700;margin-bottom:4px;margin-top:10px}
 .psico-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
 .psico-org{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#7B3F9E;margin-bottom:8px;display:block}
 .psico-info{font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:6px;margin-top:4px;line-height:1.5}
