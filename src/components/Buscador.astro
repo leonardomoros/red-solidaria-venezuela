@@ -1,7 +1,7 @@
 ---
 const sheetsKey = import.meta.env.PUBLIC_SHEETS_KEY ?? '';
 ---
-<section id="hospitales">
+<section id="hospitales" data-sk={sheetsKey}>
   <div class="container">
     <div class="s-eye">🏥 Función 01 · La más importante</div>
     <div class="flex-between">
@@ -55,9 +55,9 @@ const sheetsKey = import.meta.env.PUBLIC_SHEETS_KEY ?? '';
   </div>
 </section>
 
-<script is:inline define:vars={{ sheetsKey }}>
+<script is:inline>
 var SHEET_ID = '1FlFw-guJpiQED_EsR_YJyUhzANy_1HU84_loZqH4_CY';
-var API_KEY  = sheetsKey;
+var API_KEY  = (document.getElementById('hospitales') || {}).dataset.sk || '';
 var RANGE    = 'Pacientes!A:H';
 // ─── STATE ───────────────────────────────────────────────
 let PACIENTES = [];
