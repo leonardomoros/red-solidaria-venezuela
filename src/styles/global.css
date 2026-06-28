@@ -388,6 +388,11 @@ section+section{border-top:1px solid var(--border)}
 .psico-hero h3{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;margin-bottom:6px}
 .psico-hero p{font-size:14px;color:#E9D5FF;line-height:1.6}
 .psico-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px;margin-bottom:20px}
+.psico-grid-2col{grid-template-columns:1fr 1fr}
+.psico-card-struct{border-color:#D1FAE5;background:linear-gradient(135deg,#F0FDF4 0%,#fff 100%)}
+.psico-btn-struct{display:inline-flex;align-items:center;gap:8px;background:#059669;color:#fff;font-size:13px;font-weight:700;padding:10px 16px;border-radius:8px;text-decoration:none;margin-top:12px}
+.psico-btn-struct:hover{background:#047857}
+@media(max-width:640px){.psico-grid-2col{grid-template-columns:1fr}}
 .psico-card{background:var(--surface);border:1px solid var(--border);border-left:4px solid #7B3F9E;border-radius:var(--r);padding:18px 20px}
 .psico-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
 .psico-org{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#7B3F9E;margin-bottom:8px;display:block}
