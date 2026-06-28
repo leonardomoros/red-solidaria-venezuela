@@ -4,9 +4,19 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
 ---
 <section id="estoy-bien" data-sk={sheetsKey} data-wh={webhookUrl}>
   <div class="container">
-    <div class="s-eye">✅ Estoy Bien</div>
-    <h2 class="s-title">¿Estás bien? Avísale a tu familia</h2>
-    <p class="s-sub">Publica tu mensaje para que tus seres queridos sepan cómo estás y dónde te encuentras. Revisamos cada publicación antes de mostrarla.</p>
+
+    <!-- HERO DE LA SECCIÓN -->
+    <div class="eb-hero">
+      <div class="eb-hero-text">
+        <div class="s-eye">✅ Estoy Bien</div>
+        <h2 class="s-title">Reconectemos a cada familia.</h2>
+        <p class="s-sub">Tras el terremoto, muchas familias siguen sin saber de los suyos. Si estás bien, avisa aquí — para que tu nombre dé tranquilidad, no angustia.</p>
+      </div>
+      <button class="eb-cta-btn" onclick="abrirModalEB()">
+        + &nbsp; Avisar que estoy bien
+      </button>
+      <p class="eb-cta-note">Tu publicación será revisada antes de aparecer. Tarda menos de 2 minutos.</p>
+    </div>
 
     <!-- CARRUSEL EN VIVO -->
     <div class="eb-live-section">
@@ -33,33 +43,36 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
       <div id="eb-search-res" aria-live="polite"></div>
     </div>
 
-    <!-- FORMULARIO -->
-    <div class="eb-form-box">
-      <h3 class="eb-box-title">📝 Publicar mi estado</h3>
-      <p class="eb-form-note">Tu publicación será revisada antes de aparecer en la página.</p>
+  </div>
+</section>
 
+<!-- MODAL DEL FORMULARIO -->
+<div id="eb-modal-overlay" class="eb-modal-overlay" onclick="cerrarModalEB(event)" aria-modal="true" role="dialog" aria-label="Formulario Estoy Bien" hidden>
+  <div class="eb-modal">
+    <div class="eb-modal-header">
+      <div>
+        <div class="eb-modal-title">✅ Avisar que estoy bien</div>
+        <div class="eb-modal-sub">Completa el formulario y revisaremos tu publicación.</div>
+      </div>
+      <button class="eb-modal-close" onclick="cerrarModalEB()" aria-label="Cerrar">&times;</button>
+    </div>
+
+    <div class="eb-modal-body">
       <form id="eb-form" onsubmit="submitEB(event)" novalidate>
 
         <div class="eb-form-grid">
-          <!-- Nombre -->
           <div class="eb-field">
             <label for="eb-nombre">Nombre completo <span class="eb-req">*</span></label>
             <input type="text" id="eb-nombre" name="nombre" class="eb-input" placeholder="Ej. María García" required autocomplete="name"/>
           </div>
-
-          <!-- Cédula -->
           <div class="eb-field">
             <label for="eb-cedula">Cédula de identidad <span class="eb-req">*</span></label>
             <input type="text" id="eb-cedula" name="cedula" class="eb-input" placeholder="Ej. V-12345678" required/>
           </div>
-
-          <!-- Edad -->
           <div class="eb-field">
             <label for="eb-edad">Edad <span class="eb-req">*</span></label>
             <input type="number" id="eb-edad" name="edad" class="eb-input" placeholder="Ej. 35" min="1" max="120" required/>
           </div>
-
-          <!-- Sexo -->
           <div class="eb-field">
             <label for="eb-sexo">Sexo <span class="eb-req">*</span></label>
             <select id="eb-sexo" name="sexo" class="eb-input" required>
@@ -68,8 +81,6 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
               <option value="Masculino">Masculino</option>
             </select>
           </div>
-
-          <!-- Estado Venezuela -->
           <div class="eb-field">
             <label for="eb-estado-vzla">Estado <span class="eb-req">*</span></label>
             <select id="eb-estado-vzla" name="estado_vzla" class="eb-input" required>
@@ -84,14 +95,10 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
               <option>Trujillo</option><option>Yaracuy</option><option>Zulia</option>
             </select>
           </div>
-
-          <!-- Ciudad -->
           <div class="eb-field">
             <label for="eb-ciudad">Ciudad / Municipio <span class="eb-req">*</span></label>
             <input type="text" id="eb-ciudad" name="ciudad" class="eb-input" placeholder="Ej. Caracas" required/>
           </div>
-
-          <!-- Tipo de lugar -->
           <div class="eb-field eb-field-full">
             <label for="eb-tipo-lugar">¿Dónde te encuentras? <span class="eb-req">*</span></label>
             <select id="eb-tipo-lugar" name="tipo_lugar" class="eb-input" required>
@@ -103,15 +110,12 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
               <option value="Otro">Otro</option>
             </select>
           </div>
-
-          <!-- Dirección -->
           <div class="eb-field eb-field-full">
             <label for="eb-direccion">Dirección o punto de referencia <span class="eb-req">*</span></label>
             <input type="text" id="eb-direccion" name="direccion" class="eb-input" placeholder="Ej. Av. Principal de La Castellana, cerca del CCCT" required/>
           </div>
         </div>
 
-        <!-- Estado actual -->
         <div class="eb-status-group">
           <label class="eb-status-label">¿Cómo estás? <span class="eb-req">*</span></label>
           <div class="eb-status-options">
@@ -133,46 +137,41 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
           </div>
         </div>
 
-        <!-- Qué necesita (condicional) -->
-        <div class="eb-field eb-field-full" id="eb-necesita-wrap" style="display:none">
+        <div class="eb-field eb-field-full" id="eb-necesita-wrap" style="display:none;margin-bottom:14px">
           <label for="eb-que-necesita">¿Qué necesitas? <span class="eb-req">*</span></label>
           <input type="text" id="eb-que-necesita" name="que_necesita" class="eb-input" placeholder="Ej. Medicamentos para diabetes, agua, alimentos"/>
         </div>
 
         <div class="eb-form-grid">
-          <!-- Mensaje -->
           <div class="eb-field eb-field-full">
             <label for="eb-mensaje">Mensaje para tu familia <span class="eb-req">*</span></label>
             <textarea id="eb-mensaje" name="mensaje" class="eb-input eb-textarea" placeholder="Ej. Estoy en casa de mi tía en Los Palos Grandes, estamos todos bien. No se preocupen." maxlength="300" required></textarea>
             <div class="eb-char-count"><span id="eb-char">0</span>/300</div>
           </div>
-
-          <!-- Teléfono -->
           <div class="eb-field">
             <label for="eb-telefono">Teléfono / WhatsApp</label>
             <input type="tel" id="eb-telefono" name="telefono" class="eb-input" placeholder="Ej. 0414-1234567"/>
           </div>
-
-          <!-- Red social -->
           <div class="eb-field">
             <label for="eb-red-social">Instagram o Facebook (opcional)</label>
             <input type="text" id="eb-red-social" name="red_social" class="eb-input" placeholder="Ej. @maria.garcia"/>
           </div>
         </div>
 
+        <div id="eb-form-msg" aria-live="polite"></div>
+
         <button type="submit" class="eb-submit-btn" id="eb-submit">
           Publicar mi mensaje
         </button>
-      </form>
 
-      <div id="eb-form-msg" aria-live="polite"></div>
+      </form>
     </div>
   </div>
-</section>
+</div>
 
 <script is:inline>
 (function () {
-  var SEC = document.getElementById('estoy-bien');
+  var SEC     = document.getElementById('estoy-bien');
   var SHEET_ID = '1FlFw-guJpiQED_EsR_YJyUhzANy_1HU84_loZqH4_CY';
   var API_KEY  = SEC ? SEC.dataset.sk : '';
   var WEBHOOK  = SEC ? SEC.dataset.wh : '';
@@ -180,11 +179,36 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
   var EB_DATA  = [];
 
   var STATUS_LABEL = { estoy_bien: 'Estoy bien', recuperacion: 'En recuperación', necesita_ayuda: 'Necesita ayuda' };
-  var STATUS_CLASS = { estoy_bien: 'eb-tag-bien',   recuperacion: 'eb-tag-rec',  necesita_ayuda: 'eb-tag-ayuda' };
+  var STATUS_CLASS = { estoy_bien: 'eb-tag-bien', recuperacion: 'eb-tag-rec', necesita_ayuda: 'eb-tag-ayuda' };
+
+  // ── MODAL ──────────────────────────────────────────────────
+  window.abrirModalEB = function() {
+    var overlay = document.getElementById('eb-modal-overlay');
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    overlay.querySelector('.eb-modal').scrollTop = 0;
+  };
+
+  window.cerrarModalEB = function(e) {
+    if (e && e.target !== document.getElementById('eb-modal-overlay')) return;
+    var overlay = document.getElementById('eb-modal-overlay');
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var overlay = document.getElementById('eb-modal-overlay');
+      if (!overlay.hidden) {
+        overlay.hidden = true;
+        document.body.style.overflow = '';
+      }
+    }
+  });
 
   // ── LOAD DATA ──────────────────────────────────────────────
   function loadEB() {
-    if (!SHEET_ID || !API_KEY) return;
+    if (!API_KEY) return;
     var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/'
       + encodeURIComponent(RANGE) + '?key=' + API_KEY;
     fetch(url)
@@ -205,7 +229,7 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
           .reverse();
         buildCarousel();
         var cnt = document.getElementById('eb-live-count');
-        if (cnt) cnt.textContent = EB_DATA.length + ' publicaciones';
+        if (cnt) cnt.textContent = EB_DATA.length + ' publicación' + (EB_DATA.length !== 1 ? 'es' : '');
       })
       .catch(function() {});
   }
@@ -307,6 +331,11 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
         document.getElementById('eb-necesita-wrap').style.display = 'none';
         document.getElementById('eb-char').textContent = '0';
         msg.innerHTML = '<div class="eb-msg-ok">✅ Mensaje enviado. Aparecerá en la página una vez revisado. ¡Gracias!</div>';
+        setTimeout(function() {
+          document.getElementById('eb-modal-overlay').hidden = true;
+          document.body.style.overflow = '';
+          msg.innerHTML = '';
+        }, 3000);
       } else {
         throw new Error(res.error || 'Error');
       }
@@ -326,8 +355,7 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
   }
 
   // ── EVENTS ─────────────────────────────────────────────────
-  var radios = document.querySelectorAll('input[name="status"]');
-  radios.forEach(function(r) {
+  document.querySelectorAll('input[name="status"]').forEach(function(r) {
     r.addEventListener('change', function() {
       var wrap = document.getElementById('eb-necesita-wrap');
       wrap.style.display = this.value === 'necesita_ayuda' ? 'block' : 'none';
@@ -342,12 +370,9 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
     });
   }
 
-  var searchInput = document.getElementById('eb-search');
-  if (searchInput) {
-    searchInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') buscarEB();
-    });
-  }
+  document.getElementById('eb-search').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') buscarEB();
+  });
 
   // ── INIT ───────────────────────────────────────────────────
   loadEB();
