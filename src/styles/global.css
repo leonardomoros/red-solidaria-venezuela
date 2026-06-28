@@ -412,6 +412,7 @@ section+section{border-top:1px solid var(--border)}
 .ref-especial-label{font-size:15px;font-weight:800;color:#1E293B;line-height:1.2}
 .ref-especial-sub{font-size:11px;font-weight:700;color:#D97706;text-transform:uppercase;letter-spacing:.05em}
 .ref-especial-dir{font-size:12px;color:#64748B;margin-top:6px;line-height:1.5}
+.ref-zone-title{font-size:13px;font-weight:800;color:#92400E;margin-bottom:12px;padding:8px 12px;background:#FEF3C7;border-radius:8px;border-left:3px solid #F59E0B}
 .ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
 .ref-card{background:#fff;border:1.5px solid #FDE68A;border-radius:10px;padding:14px 16px}
 .ref-name{font-size:14px;font-weight:700;color:#1E293B;margin-bottom:6px;line-height:1.3}
