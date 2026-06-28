@@ -66,8 +66,8 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
             <input type="text" id="eb-nombre" name="nombre" class="eb-input" placeholder="Ej. María García" required autocomplete="name"/>
           </div>
           <div class="eb-field">
-            <label for="eb-cedula">Cédula de identidad <span class="eb-req">*</span></label>
-            <input type="text" id="eb-cedula" name="cedula" class="eb-input" placeholder="Ej. V-12345678" required/>
+            <label for="eb-cedula">Cédula de identidad</label>
+            <input type="text" id="eb-cedula" name="cedula" class="eb-input" placeholder="Ej. V-12345678 (opcional)"/>
           </div>
           <div class="eb-field">
             <label for="eb-edad">Edad <span class="eb-req">*</span></label>
@@ -313,7 +313,7 @@ const webhookUrl = import.meta.env.PUBLIC_EB_WEBHOOK ?? '';
     var form = document.getElementById('eb-form');
     var data = {};
     new FormData(form).forEach(function(v, k) { data[k] = v; });
-    if (!data.nombre || !data.cedula || !data.edad || !data.sexo || !data.estado_vzla
+    if (!data.nombre || !data.edad || !data.sexo || !data.estado_vzla
         || !data.tipo_lugar || !data.direccion || !data.status || !data.mensaje) {
       msg.innerHTML = '<div class="eb-msg-error">Por favor completa todos los campos obligatorios.</div>';
       return;
